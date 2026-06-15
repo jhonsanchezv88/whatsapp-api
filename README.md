@@ -172,9 +172,28 @@ Local storage or S3/MinIO. Automatic media download from WhatsApp. Optional audi
 
 ## Hosting
 
+### Recommended Hosting Partners
+
 Deploy Evolution API with optimized infrastructure through our HostGator partnership:
 
 [**Evolution API VPS — HostGator**](https://evolution-api.com/vps-evolution-api)
+
+### Railway Deployment
+
+Evolution API is fully compatible with [Railway](https://railway.app/), a modern cloud platform with automatic deployments:
+
+- **Quick deployment** from GitHub repository
+- **Managed PostgreSQL and Redis** included
+- **Automatic SSL/TLS** configuration
+- **CI/CD built-in** with GitHub integration
+- **Estimated cost**: $20-35/month
+
+📚 **Complete Railway deployment guide available**: See [`docs/railway-deployment-guide.md`](./docs/railway-deployment-guide.md) or [`RAILWAY-QUICKSTART.md`](./RAILWAY-QUICKSTART.md) for a visual quick start.
+
+Environment variable templates for Railway:
+- [`railway.evolution-api.env.template`](./railway.evolution-api.env.template)
+- [`railway.redis.env.template`](./railway.redis.env.template)
+- [`railway.postgres.env.template`](./railway.postgres.env.template)
 
 ---
 
