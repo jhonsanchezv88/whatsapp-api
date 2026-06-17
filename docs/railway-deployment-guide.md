@@ -139,21 +139,6 @@ REDIS_URI=${{Redis.REDIS_URL}}
 
 Evolution API runs migrations automatically on startup when `DATABASE_SAVE_DATA_INSTANCE` and `DATABASE_SAVE_DATA_NEW_MESSAGE` are enabled.
 
-**Manual alternative via Railway CLI:**
-
-```bash
-# Install Railway CLI
-npm install -g @railway/cli
-
-# Login
-railway login
-
-# Link to the project
-railway link
-
-# Run migrations
-railway run npm run db:deploy
-```
 
 ## Production Configuration
 
@@ -178,18 +163,6 @@ Access real-time metrics in the Railway dashboard:
 - **Network** - inbound/outbound traffic
 - **Logs** - live application logs
 
-### Database Backups
-
-PostgreSQL on Railway includes automatic backups:
-- Daily backups
-- 7-day retention (Developer plan)
-- 14-day retention (Team plan)
-
-**Manual backup:**
-
-```bash
-railway run pg_dump $DATABASE_URL > backup.sql
-```
 
 ## Testing the Installation
 

@@ -85,19 +85,19 @@ Full deployment of the Evolution API in a production environment on the Railway 
 ## Technical Results
 
 ### Performance
-- ⚡ **Response time**: < 200ms (basic endpoints)
-- 🚀 **Build time**: ~3-5 minutes
-- 🔄 **Auto deploy**: Active on every push
+-  **Response time**: < 200ms (basic endpoints)
+-  **Build time**: ~3-5 minutes
+-  **Auto deploy**: Active on every push
 
 ### Availability
-- 🌐 **Public URL**: Globally accessible
-- 🔒 **SSL/TLS**: Automatically configured
-- 💾 **Backups**: Daily (PostgreSQL)
+-  **Public URL**: Globally accessible
+-  **SSL/TLS**: Automatically configured
+-  **Backups**: Daily (PostgreSQL)
 
 ### Scalability
-- 📊 **Allocated RAM**: 512MB - 1GB (scalable)
-- 💻 **CPU**: Shared vCPU (scalable)
-- 📦 **Storage**: Unlimited for the application
+-  **Allocated RAM**: 512MB - 1GB (scalable)
+-  **CPU**: Shared vCPU (scalable)
+-  **Storage**: Unlimited for the application
 
 ---
 
