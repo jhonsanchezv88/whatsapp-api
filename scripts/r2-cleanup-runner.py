@@ -12,7 +12,7 @@ import time
 import importlib.util
 from pathlib import Path
 
-INTERVAL_MIN = int(os.getenv("CLEANUP_INTERVAL", "0"))
+INTERVAL_MIN = int(os.getenv("CLEANUP_INTERVAL", "15"))
 INTERVAL_SEC = INTERVAL_MIN * 60
 
 # Load the cleanup module
