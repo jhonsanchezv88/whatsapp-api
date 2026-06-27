@@ -17,7 +17,7 @@ Welcome to the complete Evolution API documentation. This directory contains all
 
 ### Deployment Guides
 
-**[Railway Deployment Guide](./railway-deployment-guide.md)** ⭐ **NEW**
+**[Railway Deployment Guide](./railway-deployment-guide.md)** 
 - Complete Railway deployment guide
 - PostgreSQL, Redis, and Evolution API configuration
 - Troubleshooting and monitoring
