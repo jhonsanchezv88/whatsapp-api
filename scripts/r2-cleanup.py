@@ -23,7 +23,7 @@ ACCESS_KEY  = os.environ["S3_ACCESS_KEY"]
 SECRET_KEY  = os.environ["S3_SECRET_KEY"]
 BUCKET      = os.environ["S3_BUCKET"]
 ENDPOINT    = os.environ["S3_ENDPOINT"]  # without https://
-MAX_AGE_MIN = int(os.getenv("CLEANUP_MAX_AGE", "15"))
+MAX_AGE_MIN = int(os.getenv("CLEANUP_MAX_AGE", "0"))
 # ───────────────────────────────────────────────────────────────
 
 def get_client():
