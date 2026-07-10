@@ -5,8 +5,8 @@
 # Requiere: instancia conectada a WhatsApp
 # ================================================
 
-$BASE_URL    = "https://whatsapp-api-production-8261.up.railway.app"
-$API_KEY     = "e45f8sigjom6wb950c1xq8st52y85sax"
+$BASE_URL    = ""
+$API_KEY     = ""
 $INSTANCE    = "Pruebas"
 $TEST_NUMBER = "573186139890"
 $WEBHOOK_URL = "https://webhook.site/a89d7088-4900-40c1-81f5-048390a8b392"
