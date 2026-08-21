@@ -2548,7 +2548,18 @@ export class ChatwootService {
   public isImportHistoryAvailable() {
     const uri = this.configService.get<Chatwoot>('CHATWOOT').IMPORT.DATABASE.CONNECTION.URI;
 
-    return uri && uri !== 'postgres://user:password@hostname:port/dbname';
+    if (!uri || typeof uri !== 'string') {
+      return false;
+    }
+
+    // Only a real PostgreSQL connection string enables direct DB import.
+    // Reject placeholders and disabled flags ("false", "0", "1", empty, etc.)
+    // which were previously treated as valid and caused `getaddrinfo ENOTFOUND`
+    // errors when the pg pool tried to resolve them as a hostname.
+    return (
+      (uri.startsWith('postgres://') || uri.startsWith('postgresql://')) &&
+      uri !== 'postgres://user:password@hostname:port/dbname'
+    );
   }
 
   public addHistoryMessages(instance: InstanceDto, messagesRaw: MessageModel[]) {
