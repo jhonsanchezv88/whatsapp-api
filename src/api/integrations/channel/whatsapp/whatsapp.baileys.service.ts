@@ -2305,6 +2305,10 @@ export class BaileysStartupService extends ChannelStartupService {
     try {
       const disableTyping = this.configService.get<Chatwoot>('CHATWOOT').DISABLE_TYPING;
 
+      if (options?.delay && disableTyping) {
+        this.logger.log(`BAILEYS SEND: typing skipped for ${sender} (CHATWOOT_DISABLE_TYPING=true)`);
+      }
+
       if (options?.delay && !disableTyping) {
         this.logger.verbose(`Typing for ${options.delay}ms to ${sender}`);
         if (options.delay > 20000) {
@@ -2358,6 +2362,8 @@ export class BaileysStartupService extends ChannelStartupService {
 
       let mentions: string[];
       let contextInfo: any;
+
+      const baileysSendStart = Date.now();
 
       if (isJidGroup(sender)) {
         let group;
@@ -2419,6 +2425,8 @@ export class BaileysStartupService extends ChannelStartupService {
           contextInfo,
         );
       }
+
+      this.logger.log(`BAILEYS SEND: message delivered to ${sender} in ${Date.now() - baileysSendStart}ms`);
 
       if (Long.isLong(messageSent?.messageTimestamp)) {
         messageSent.messageTimestamp = messageSent.messageTimestamp?.toNumber();

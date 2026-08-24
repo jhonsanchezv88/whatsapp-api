@@ -1234,7 +1234,11 @@ export class ChatwootService {
 
         sendTelemetry('/message/sendWhatsAppAudio');
 
+        const audioSendStart = Date.now();
         const messageSent = await waInstance?.audioWhatsapp(data, null, true);
+        this.logger.log(
+          `CHATWOOT SEND: audio sent to ${number} in ${Date.now() - audioSendStart}ms (typing_disabled=${this.configService.get<Chatwoot>('CHATWOOT').DISABLE_TYPING})`
+        );
 
         return messageSent;
       }
@@ -1259,7 +1263,11 @@ export class ChatwootService {
         data.caption = caption;
       }
 
+      const mediaSendStart = Date.now();
       const messageSent = await waInstance?.mediaMessage(data, null, true);
+      this.logger.log(
+        `CHATWOOT SEND: media (${type}) sent to ${number} in ${Date.now() - mediaSendStart}ms (typing_disabled=${this.configService.get<Chatwoot>('CHATWOOT').DISABLE_TYPING})`
+      );
 
       return messageSent;
     } catch (error) {
@@ -1305,6 +1313,7 @@ export class ChatwootService {
   }
 
   public async receiveWebhook(instance: InstanceDto, body: any) {
+    const webhookStart = Date.now();
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
 
@@ -1451,6 +1460,10 @@ export class ChatwootService {
           return { message: 'bot' };
         }
 
+        this.logger.log(
+          `CHATWOOT WEBHOOK: outgoing message received for ${chatId} (msg=${body.id}, inbox=${body.inbox?.id}, conversation=${body.conversation?.id}), elapsed_since_webhook=${Date.now() - webhookStart}ms`
+        );
+
         let formatText: string;
         if (senderName === null || senderName === undefined) {
           formatText = messageReceived;
@@ -1475,12 +1488,16 @@ export class ChatwootService {
                 quoted: await this.getQuotedMessage(body, instance),
               };
 
+              const attachmentSendStart = Date.now();
               const messageSent = await this.sendAttachment(
                 waInstance,
                 chatId,
                 attachment.data_url,
                 formatText,
                 options,
+              );
+              this.logger.log(
+                `CHATWOOT SEND: attachment sent to ${chatId} in ${Date.now() - attachmentSendStart}ms (msg=${body.id})`
               );
               if (!messageSent && body.conversation?.id) {
                 this.onSendMessageError(instance, body.conversation?.id);
@@ -1511,7 +1528,11 @@ export class ChatwootService {
 
             let messageSent: any;
             try {
+              const textSendStart = Date.now();
               messageSent = await waInstance?.textMessage(data, true);
+              this.logger.log(
+                `CHATWOOT SEND: text sent to ${chatId} in ${Date.now() - textSendStart}ms (msg=${body.id}, delay=${data.delay ?? 0}, typing_disabled=${this.configService.get<Chatwoot>('CHATWOOT').DISABLE_TYPING})`
+              );
               if (!messageSent) {
                 throw new Error('Message not sent');
               }
