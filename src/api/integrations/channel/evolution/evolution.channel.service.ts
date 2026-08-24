@@ -308,7 +308,9 @@ export class EvolutionStartupService extends ChannelStartupService {
         quoted = msg;
       }
 
-      if (options.delay) {
+      const disableTyping = this.configService.get<Chatwoot>('CHATWOOT').DISABLE_TYPING;
+
+      if (options.delay && !disableTyping) {
         await new Promise((resolve) => setTimeout(resolve, options.delay));
       }
 

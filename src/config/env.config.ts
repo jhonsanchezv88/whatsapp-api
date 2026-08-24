@@ -320,6 +320,7 @@ export type Chatwoot = {
   MESSAGE_DELETE: boolean;
   MESSAGE_READ: boolean;
   BOT_CONTACT: boolean;
+  DISABLE_TYPING: boolean;
   IMPORT: {
     DATABASE: {
       CONNECTION: {
@@ -814,6 +815,7 @@ export class ConfigService {
         MESSAGE_DELETE: process.env.CHATWOOT_MESSAGE_DELETE === 'true',
         MESSAGE_READ: process.env.CHATWOOT_MESSAGE_READ === 'true',
         BOT_CONTACT: !process.env.CHATWOOT_BOT_CONTACT || process.env.CHATWOOT_BOT_CONTACT === 'true',
+        DISABLE_TYPING: process.env.CHATWOOT_DISABLE_TYPING === 'true',
         IMPORT: {
           DATABASE: {
             CONNECTION: {

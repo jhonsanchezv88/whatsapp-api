@@ -2303,7 +2303,9 @@ export class BaileysStartupService extends ChannelStartupService {
     this.logger.verbose(`Sending message to ${sender}`);
 
     try {
-      if (options?.delay) {
+      const disableTyping = this.configService.get<Chatwoot>('CHATWOOT').DISABLE_TYPING;
+
+      if (options?.delay && !disableTyping) {
         this.logger.verbose(`Typing for ${options.delay}ms to ${sender}`);
         if (options.delay > 20000) {
           let remainingDelay = options.delay;
