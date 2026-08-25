@@ -1236,7 +1236,7 @@ export class ChatwootService {
 
         const audioSendStart = Date.now();
         const messageSent = await waInstance?.audioWhatsapp(data, null, true);
-        this.logger.log(
+        this.logger.info(
           `CHATWOOT SEND: audio sent to ${number} in ${Date.now() - audioSendStart}ms (typing_disabled=${this.configService.get<Chatwoot>('CHATWOOT').DISABLE_TYPING})`
         );
 
@@ -1460,7 +1460,7 @@ export class ChatwootService {
           return { message: 'bot' };
         }
 
-        this.logger.log(
+        this.logger.info(
           `CHATWOOT WEBHOOK: outgoing message received for ${chatId} (msg=${body.id}, inbox=${body.inbox?.id}, conversation=${body.conversation?.id}), elapsed_since_webhook=${Date.now() - webhookStart}ms`
         );
 
@@ -1496,7 +1496,7 @@ export class ChatwootService {
                 formatText,
                 options,
               );
-              this.logger.log(
+              this.logger.info(
                 `CHATWOOT SEND: attachment sent to ${chatId} in ${Date.now() - attachmentSendStart}ms (msg=${body.id})`
               );
               if (!messageSent && body.conversation?.id) {
@@ -1530,7 +1530,7 @@ export class ChatwootService {
             try {
               const textSendStart = Date.now();
               messageSent = await waInstance?.textMessage(data, true);
-              this.logger.log(
+              this.logger.info(
                 `CHATWOOT SEND: text sent to ${chatId} in ${Date.now() - textSendStart}ms (msg=${body.id}, delay=${data.delay ?? 0}, typing_disabled=${this.configService.get<Chatwoot>('CHATWOOT').DISABLE_TYPING})`
               );
               if (!messageSent) {
