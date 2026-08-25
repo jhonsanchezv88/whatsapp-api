@@ -1,0 +1,1001 @@
+2026-07-10T16:41:24.511877361Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:41:24.511878759Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:41:24.511885329Z [inf]    isTimeout: false,
+2026-07-10T16:41:24.511890139Z [inf]    statusCode: 503,
+2026-07-10T16:41:24.513260723Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:41:24.513269027Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:41:24.513270085Z [inf]    name: 'AxiosError',
+2026-07-10T16:41:24.513277402Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:41:24.513280314Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:41:24.513284578Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:41:24.513287084Z [inf]    isTimeout: false,
+2026-07-10T16:41:24.513292572Z [inf]  }
+2026-07-10T16:41:24.513298784Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:41:20   ERROR  [WebhookController] [object] {
+2026-07-10T16:41:24.513301747Z [inf]    statusCode: 503,
+2026-07-10T16:41:24.513309018Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:41:24.513310002Z [inf]    error: undefined,
+2026-07-10T16:41:24.513317556Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:41:24.513319650Z [inf]    message: 'Tentativa 8/10 falhou: Request failed with status code 503',
+2026-07-10T16:41:24.513323742Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:41:24.513329610Z [inf]    hostName: undefined,
+2026-07-10T16:41:24.513331505Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:41:24.513339681Z [inf]    syscall: undefined,
+2026-07-10T16:41:24.513339857Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:41:24.513348603Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:41:24.513350557Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:41:24.513356801Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:41:24.514535422Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:41:24.514542081Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:41:24.514545793Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:41:24.514549094Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:41:24.514552629Z [inf]    name: 'AxiosError',
+2026-07-10T16:41:24.514556077Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:41:24.514559797Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:41:24.514565338Z [inf]  }
+2026-07-10T16:41:26.451323590Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:41:26   ERROR  [WebhookController] [object] {
+2026-07-10T16:41:26.451328201Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:41:26.451332384Z [inf]    message: 'Tentativa 8/10 falhou: Request failed with status code 503',
+2026-07-10T16:41:26.451337618Z [inf]    hostName: undefined,
+2026-07-10T16:41:26.451342237Z [inf]    syscall: undefined,
+2026-07-10T16:41:26.451346388Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:41:26.451350964Z [inf]    isTimeout: false,
+2026-07-10T16:41:26.451355177Z [inf]    statusCode: 503,
+2026-07-10T16:41:26.451359250Z [inf]    error: undefined,
+2026-07-10T16:41:26.451363244Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:41:26.451369777Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:41:26.451376218Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:41:26.451380244Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:41:26.451384220Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:41:26.451388826Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:41:26.451392404Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:41:26.451396678Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:41:26.451401322Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:41:26.451405064Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:41:26.451409106Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:41:26.453172186Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:41:26.453183279Z [inf]    name: 'AxiosError',
+2026-07-10T16:41:26.453189665Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:41:26.453194704Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:41:26.453201799Z [inf]  }
+2026-07-10T16:41:46.458054332Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:41:39   ERROR  [WebhookController] [object] {
+2026-07-10T16:41:46.458061736Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:41:46.458070767Z [inf]    message: 'Tentativa 8/10 falhou: Request failed with status code 503',
+2026-07-10T16:41:46.458079440Z [inf]    hostName: undefined,
+2026-07-10T16:41:46.458088637Z [inf]    syscall: undefined,
+2026-07-10T16:41:46.458094857Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:41:46.458105244Z [inf]    isTimeout: false,
+2026-07-10T16:41:46.458111051Z [inf]    statusCode: 503,
+2026-07-10T16:41:46.458117824Z [inf]    error: undefined,
+2026-07-10T16:41:46.458124594Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:41:46.458130047Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:41:46.458136214Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:41:46.458142625Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:41:46.458148037Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:41:46.458154339Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:41:46.458160919Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:41:46.458167104Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:41:46.458172876Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:41:46.458179509Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:41:46.458185319Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:41:46.459255914Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:41:46.459268905Z [inf]    name: 'AxiosError',
+2026-07-10T16:41:46.459276797Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:41:46.459285496Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:41:46.459291880Z [inf]  }
+2026-07-10T16:41:46.459298551Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:41:40   ERROR  [WebhookController] [object] {
+2026-07-10T16:41:46.459305087Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:41:46.459311194Z [inf]    message: 'Tentativa 8/10 falhou: Request failed with status code 503',
+2026-07-10T16:41:46.459317292Z [inf]    hostName: undefined,
+2026-07-10T16:41:46.459325333Z [inf]    syscall: undefined,
+2026-07-10T16:41:46.459333594Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:41:46.459341359Z [inf]    isTimeout: false,
+2026-07-10T16:41:46.459347227Z [inf]    statusCode: 503,
+2026-07-10T16:41:46.459352915Z [inf]    error: undefined,
+2026-07-10T16:41:46.459359099Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:41:46.459364491Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:41:46.459375806Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:41:46.459382626Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:41:46.459388657Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:41:46.459394663Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:41:46.459400952Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:41:46.459407848Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:41:46.460875438Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:41:46.460885748Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:41:46.460891775Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:41:46.460897429Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:41:46.460902998Z [inf]    name: 'AxiosError',
+2026-07-10T16:41:46.460909577Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:41:46.460915628Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:41:46.460920877Z [inf]  }
+2026-07-10T16:41:46.460925932Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:41:44   ERROR  [WebhookController] [object] {
+2026-07-10T16:41:46.460931223Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:41:46.460936519Z [inf]    message: 'Tentativa 8/10 falhou: Request failed with status code 503',
+2026-07-10T16:41:46.460949198Z [inf]    hostName: undefined,
+2026-07-10T16:41:46.460958920Z [inf]    syscall: undefined,
+2026-07-10T16:41:46.460964673Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:41:46.460970074Z [inf]    isTimeout: false,
+2026-07-10T16:41:46.460975557Z [inf]    statusCode: 503,
+2026-07-10T16:41:46.460980677Z [inf]    error: undefined,
+2026-07-10T16:41:46.460989520Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:41:46.460994858Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:41:46.461001281Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:41:46.461006588Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:41:46.461012188Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:41:46.462220044Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:41:46.462228345Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:41:46.462234016Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:41:46.462238065Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:41:46.462241572Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:41:46.462245168Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:41:46.462248616Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:41:46.462252189Z [inf]    name: 'AxiosError',
+2026-07-10T16:41:46.462266659Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:41:46.462271159Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:41:46.462275742Z [inf]  }
+2026-07-10T16:42:56.480848400Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:42:56   ERROR  [WebhookController] [object] {
+2026-07-10T16:42:56.480857685Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:42:56.480863046Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:42:56.480868717Z [inf]    hostName: undefined,
+2026-07-10T16:42:56.480875453Z [inf]    syscall: undefined,
+2026-07-10T16:42:56.480881669Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:42:56.480889778Z [inf]    isTimeout: false,
+2026-07-10T16:42:56.480895029Z [inf]    statusCode: 503,
+2026-07-10T16:42:56.480900419Z [inf]    error: undefined,
+2026-07-10T16:42:56.480906260Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:42:56.480911350Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:42:56.480917096Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:42:56.480922013Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:42:56.480928307Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:42:56.480935256Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:42:56.480940627Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:42:56.480945779Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:42:56.480951032Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:42:56.480955924Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:42:56.480959464Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:42:56.482987495Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:42:56.482995122Z [inf]    name: 'AxiosError',
+2026-07-10T16:42:56.483000280Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:42:56.483005137Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:42:56.483014060Z [inf]  }
+2026-07-10T16:43:03.359221004Z [inf]    error: undefined,
+2026-07-10T16:43:03.359232703Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:43:03.359239983Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:43:03.359248816Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:43:03.359253985Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:43:03.359259402Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:43:03.359271788Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:43:03.359272139Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:43:03   ERROR  [WebhookController] [object] {
+2026-07-10T16:43:03.359279937Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:43:03.359281733Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:43:03.359289166Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:43:03.359289813Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:43:03.359297877Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:43:03.359298799Z [inf]    hostName: undefined,
+2026-07-10T16:43:03.359306122Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:43:03.359306456Z [inf]    syscall: undefined,
+2026-07-10T16:43:03.359315202Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:43:03.359315496Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:43:03.359320916Z [inf]    isTimeout: false,
+2026-07-10T16:43:03.359325256Z [inf]    statusCode: 503,
+2026-07-10T16:43:03.365561422Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:43:03.365569939Z [inf]    name: 'AxiosError',
+2026-07-10T16:43:03.365575758Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:43:03.365581156Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:43:03.365586197Z [inf]  }
+2026-07-10T16:43:05.749975433Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:43:05   ERROR  [WebhookController] [object] {
+2026-07-10T16:43:05.749983300Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:43:05.749988800Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:43:05.749993097Z [inf]    hostName: undefined,
+2026-07-10T16:43:05.749998904Z [inf]    syscall: undefined,
+2026-07-10T16:43:05.750003120Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:43:05.750006981Z [inf]    isTimeout: false,
+2026-07-10T16:43:05.750011538Z [inf]    statusCode: 503,
+2026-07-10T16:43:05.750014760Z [inf]    error: undefined,
+2026-07-10T16:43:05.750018334Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:43:05.750021995Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:43:05.750025392Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:43:05.750028990Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:43:05.750032559Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:43:05.750036148Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:43:05.750039697Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:43:05.750043147Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:43:05.750047603Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:43:05.750051034Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:43:05.750054232Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:43:05.751852029Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:43:05.751862319Z [inf]    name: 'AxiosError',
+2026-07-10T16:43:05.751869394Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:43:05.751874353Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:43:05.751881032Z [inf]  }
+2026-07-10T16:43:35.754433115Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:43:28   ERROR  [WebhookController] [object] {
+2026-07-10T16:43:35.754440572Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:43:35.754446911Z [inf]    message: 'Tentativa 10/10 falhou: Request failed with status code 503',
+2026-07-10T16:43:35.754452955Z [inf]    hostName: undefined,
+2026-07-10T16:43:35.754459524Z [inf]    syscall: undefined,
+2026-07-10T16:43:35.754465810Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:43:35.754471843Z [inf]    isTimeout: false,
+2026-07-10T16:43:35.754483275Z [inf]    statusCode: 503,
+2026-07-10T16:43:35.754489172Z [inf]    error: undefined,
+2026-07-10T16:43:35.754494751Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:43:35.754499782Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:43:35.754505159Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:43:35.754512056Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:43:35.754517635Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:43:35.754524484Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:43:35.754529429Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:43:35.754534448Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:43:35.754539407Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:43:35.754544434Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:43:35.754551957Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:43:35.756208884Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:43:35.756217693Z [inf]    name: 'AxiosError',
+2026-07-10T16:43:35.756223275Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:43:35.756227882Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:43:35.756232067Z [inf]  }
+2026-07-10T16:43:35.756236404Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:43:28   ERROR  [WebhookController] [object] {
+2026-07-10T16:43:35.756240903Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:43:35.756246224Z [inf]    message: 'Todas as tentativas falharam: Request failed with status code 503',
+2026-07-10T16:43:35.756251491Z [inf]    hostName: undefined,
+2026-07-10T16:43:35.756256770Z [inf]    syscall: undefined,
+2026-07-10T16:43:35.756262194Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:43:35.756267178Z [inf]    error: undefined,
+2026-07-10T16:43:35.756272684Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:43:35.756277671Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:43:35.756282757Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:43:35.756287726Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:43:35.756335125Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:43:35.756339797Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:43:35.756343887Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:43:35.756347673Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:43:35.757268895Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:43:35.757279497Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:43:35.757285331Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:43:35.757289930Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:43:35.757294657Z [inf]    name: 'AxiosError',
+2026-07-10T16:43:35.757299403Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:43:35.757303628Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:43:35.757308180Z [inf]  }
+2026-07-10T16:44:05.766651480Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:44:05.766658760Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:44:05.766666075Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:43:58   ERROR  [WebhookController] [object] {
+2026-07-10T16:44:05.766674116Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:44:05.766680855Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:44:05.766688334Z [inf]    hostName: undefined,
+2026-07-10T16:44:05.766697045Z [inf]    syscall: undefined,
+2026-07-10T16:44:05.766704199Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:44:05.766709230Z [inf]    isTimeout: false,
+2026-07-10T16:44:05.766713927Z [inf]    statusCode: 503,
+2026-07-10T16:44:05.766719581Z [inf]    error: undefined,
+2026-07-10T16:44:05.766724210Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:44:05.766729433Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:44:05.766735161Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:44:05.766739903Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:44:05.766744468Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:44:05.766750190Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:44:05.766755425Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:44:05.766759808Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:44:05.766763641Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:44:05.768459394Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:44:05.768465506Z [inf]    name: 'AxiosError',
+2026-07-10T16:44:05.768471462Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:44:05.768476334Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:44:05.768480906Z [inf]  }
+2026-07-10T16:44:11.681591426Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:44:11.681600948Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:44:11.681607335Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:44:11   ERROR  [WebhookController] [object] {
+2026-07-10T16:44:11.681608183Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:44:11.681619028Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:44:11.681619104Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:44:11.681626098Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:44:11.681628319Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:44:11.681633988Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:44:11.681636935Z [inf]    hostName: undefined,
+2026-07-10T16:44:11.681642320Z [inf]    syscall: undefined,
+2026-07-10T16:44:11.681647065Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:44:11.681651307Z [inf]    isTimeout: false,
+2026-07-10T16:44:11.681655417Z [inf]    statusCode: 503,
+2026-07-10T16:44:11.681661489Z [inf]    error: undefined,
+2026-07-10T16:44:11.681666033Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:44:11.681670323Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:44:11.681674846Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:44:11.681679395Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:44:11.681683535Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:44:11.683058749Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:44:11.683068246Z [inf]    name: 'AxiosError',
+2026-07-10T16:44:11.683073084Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:44:11.683077303Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:44:11.683081483Z [inf]  }
+2026-07-10T16:44:16.086524234Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:44:16.086533474Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:44:16.086542435Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:44:16   ERROR  [WebhookController] [object] {
+2026-07-10T16:44:16.086550789Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:44:16.086562887Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:44:16.086567987Z [inf]    hostName: undefined,
+2026-07-10T16:44:16.086572104Z [inf]    syscall: undefined,
+2026-07-10T16:44:16.086576113Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:44:16.086579921Z [inf]    isTimeout: false,
+2026-07-10T16:44:16.086583734Z [inf]    statusCode: 503,
+2026-07-10T16:44:16.086588332Z [inf]    error: undefined,
+2026-07-10T16:44:16.086592367Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:44:16.086596296Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:44:16.086599920Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:44:16.086603411Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:44:16.086607186Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:44:16.086611067Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:44:16.086614941Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:44:16.086618529Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:44:16.086623246Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:44:16.087614762Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:44:16.087619123Z [inf]    name: 'AxiosError',
+2026-07-10T16:44:16.087623111Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:44:16.087628061Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:44:16.087632284Z [inf]  }
+2026-07-10T16:44:17.693351408Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:44:17.693363464Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:44:17.693370089Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:44:17.693375431Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:44:17.693382694Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:44:17.693392001Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:44:17.693394068Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:44:17   ERROR  [WebhookController] [object] {
+2026-07-10T16:44:17.693401321Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:44:17.693406603Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:44:17.693411446Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:44:17.693416022Z [inf]    message: 'Tentativa 10/10 falhou: Request failed with status code 503',
+2026-07-10T16:44:17.693422216Z [inf]    hostName: undefined,
+2026-07-10T16:44:17.693428250Z [inf]    syscall: undefined,
+2026-07-10T16:44:17.693434489Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:44:17.693440299Z [inf]    isTimeout: false,
+2026-07-10T16:44:17.693445963Z [inf]    statusCode: 503,
+2026-07-10T16:44:17.693452737Z [inf]    error: undefined,
+2026-07-10T16:44:17.693459769Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:44:17.693465677Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:44:17.693472608Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:44:17.694077056Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:44:17.694086383Z [inf]    name: 'AxiosError',
+2026-07-10T16:44:17.694092945Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:44:17.694098592Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:44:17.694104253Z [inf]  }
+2026-07-10T16:44:17.694109536Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:44:17   ERROR  [WebhookController] [object] {
+2026-07-10T16:44:17.694116305Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:44:17.694122054Z [inf]    message: 'Todas as tentativas falharam: Request failed with status code 503',
+2026-07-10T16:44:17.694127233Z [inf]    hostName: undefined,
+2026-07-10T16:44:17.694132381Z [inf]    syscall: undefined,
+2026-07-10T16:44:17.694137404Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:44:17.694142408Z [inf]    error: undefined,
+2026-07-10T16:44:17.694147870Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:44:17.694153606Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:44:17.694158417Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:44:17.694163975Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:44:17.694168977Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:44:17.694174754Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:44:17.694179354Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:44:17.694183465Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:44:17.695172785Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:44:17.695183445Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:44:17.695193004Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:44:17.695197605Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:44:17.695201937Z [inf]    name: 'AxiosError',
+2026-07-10T16:44:17.695207809Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:44:17.695212230Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:44:17.695216723Z [inf]  }
+2026-07-10T16:44:18.681384952Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:44:18.681396323Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:44:18.681403855Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:44:18.681412023Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:44:18.681415938Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:44:18   ERROR  [WebhookController] [object] {
+2026-07-10T16:44:18.681422483Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:44:18.681429640Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:44:18.681436990Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:44:18.681445672Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:44:18.681447723Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:44:18.681463569Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:44:18.681471479Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:44:18.681476995Z [inf]    isTimeout: false,
+2026-07-10T16:44:18.681481768Z [inf]    hostName: undefined,
+2026-07-10T16:44:18.681487998Z [inf]    statusCode: 503,
+2026-07-10T16:44:18.681493234Z [inf]    error: undefined,
+2026-07-10T16:44:18.681500115Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:44:18.681502952Z [inf]    syscall: undefined,
+2026-07-10T16:44:18.681508614Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:44:18.681512795Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:44:18.681890327Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:44:18.681895913Z [inf]    name: 'AxiosError',
+2026-07-10T16:44:18.681900851Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:44:18.681904723Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:44:18.681914628Z [inf]  }
+2026-07-10T16:44:27.760363316Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:44:27.760375912Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:44:27.760383795Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:44:27   ERROR  [WebhookController] [object] {
+2026-07-10T16:44:27.760390094Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:44:27.760395888Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:44:27.760402273Z [inf]    hostName: undefined,
+2026-07-10T16:44:27.760408679Z [inf]    syscall: undefined,
+2026-07-10T16:44:27.760414258Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:44:27.760419574Z [inf]    isTimeout: false,
+2026-07-10T16:44:27.760425607Z [inf]    statusCode: 503,
+2026-07-10T16:44:27.760431432Z [inf]    error: undefined,
+2026-07-10T16:44:27.760436910Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:44:27.760442376Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:44:27.760448763Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:44:27.760455205Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:44:27.760461065Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:44:27.760467129Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:44:27.760474578Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:44:27.760483069Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:44:27.760501616Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:44:27.761323094Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:44:27.761330160Z [inf]    name: 'AxiosError',
+2026-07-10T16:44:27.761334174Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:44:27.761338599Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:44:27.761342734Z [inf]  }
+2026-07-10T16:44:35.929897232Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:44:35   ERROR  [WebhookController] [object] {
+2026-07-10T16:44:35.929907372Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:44:35.929914207Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:44:35.929919891Z [inf]    hostName: undefined,
+2026-07-10T16:44:35.929926609Z [inf]    syscall: undefined,
+2026-07-10T16:44:35.929932597Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:44:35.929937797Z [inf]    isTimeout: false,
+2026-07-10T16:44:35.929945109Z [inf]    statusCode: 503,
+2026-07-10T16:44:35.929949244Z [inf]    error: undefined,
+2026-07-10T16:44:35.929953975Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:44:35.929958473Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:44:35.929962205Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:44:35.929966590Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:44:35.929970604Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:44:35.929978748Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:44:35.929983142Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:44:35.929988235Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:44:35.929995832Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:44:35.930000256Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:44:35.930004525Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:44:35.931375851Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:44:35.931387166Z [inf]    name: 'AxiosError',
+2026-07-10T16:44:35.931393695Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:44:35.931399039Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:44:35.931404328Z [inf]  }
+2026-07-10T16:44:40.378129955Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:44:40   ERROR  [WebhookController] [object] {
+2026-07-10T16:44:40.378139477Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:44:40.378146020Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:44:40.378151337Z [inf]    hostName: undefined,
+2026-07-10T16:44:40.378156554Z [inf]    syscall: undefined,
+2026-07-10T16:44:40.378162629Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:44:40.378168508Z [inf]    isTimeout: false,
+2026-07-10T16:44:40.378175821Z [inf]    statusCode: 503,
+2026-07-10T16:44:40.378181795Z [inf]    error: undefined,
+2026-07-10T16:44:40.378188104Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:44:40.378193591Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:44:40.378199049Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:44:40.378205078Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:44:40.378212612Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:44:40.378218249Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:44:40.378223471Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:44:40.378229621Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:44:40.378235853Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:44:40.378241328Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:44:40.378247444Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:44:40.379561035Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:44:40.379567469Z [inf]    name: 'AxiosError',
+2026-07-10T16:44:40.379571584Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:44:40.379576604Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:44:40.379581925Z [inf]  }
+2026-07-10T16:44:42.063810054Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:44:42   ERROR  [WebhookController] [object] {
+2026-07-10T16:44:42.063821659Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:44:42.063828296Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:44:42.063833756Z [inf]    hostName: undefined,
+2026-07-10T16:44:42.063838990Z [inf]    syscall: undefined,
+2026-07-10T16:44:42.063845285Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:44:42.063850693Z [inf]    isTimeout: false,
+2026-07-10T16:44:42.063855692Z [inf]    statusCode: 503,
+2026-07-10T16:44:42.063861921Z [inf]    error: undefined,
+2026-07-10T16:44:42.063868039Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:44:42.063873448Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:44:42.063879999Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:44:42.063885224Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:44:42.063890667Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:44:42.063895925Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:44:42.063900668Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:44:42.063905726Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:44:42.063910737Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:44:42.063916164Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:44:42.063921221Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:44:42.065033591Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:44:42.065042184Z [inf]    name: 'AxiosError',
+2026-07-10T16:44:42.065048584Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:44:42.065054774Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:44:42.065059966Z [inf]  }
+2026-07-10T16:44:51.156511027Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:44:51   ERROR  [WebhookController] [object] {
+2026-07-10T16:44:51.156521441Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:44:51.156529112Z [inf]    message: 'Tentativa 10/10 falhou: Request failed with status code 503',
+2026-07-10T16:44:51.156532519Z [inf]    hostName: undefined,
+2026-07-10T16:44:51.156535894Z [inf]    syscall: undefined,
+2026-07-10T16:44:51.156539330Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:44:51.156542747Z [inf]    isTimeout: false,
+2026-07-10T16:44:51.156545945Z [inf]    statusCode: 503,
+2026-07-10T16:44:51.156549103Z [inf]    error: undefined,
+2026-07-10T16:44:51.156553088Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:44:51.156557003Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:44:51.156560329Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:44:51.156563505Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:44:51.156566676Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:44:51.156570622Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:44:51.156573794Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:44:51.156577361Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:44:51.156580751Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:44:51.156584034Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:44:51.156587188Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:44:51.158382454Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:44:51.158390960Z [inf]    name: 'AxiosError',
+2026-07-10T16:44:51.158396572Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:44:51.158400969Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:44:51.158405034Z [inf]  }
+2026-07-10T16:44:51.158409281Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:44:51   ERROR  [WebhookController] [object] {
+2026-07-10T16:44:51.158413205Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:44:51.158417243Z [inf]    message: 'Todas as tentativas falharam: Request failed with status code 503',
+2026-07-10T16:44:51.158421497Z [inf]    hostName: undefined,
+2026-07-10T16:44:51.158425730Z [inf]    syscall: undefined,
+2026-07-10T16:44:51.158429232Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:44:51.158433031Z [inf]    error: undefined,
+2026-07-10T16:44:51.158440953Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:44:51.158445159Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:44:51.158448832Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:44:51.158452689Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:44:51.158460245Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:44:51.158464396Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:44:51.158468198Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:44:51.158472193Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:44:51.160461819Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:44:51.160472876Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:44:51.160480976Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:44:51.160487155Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:44:51.160492869Z [inf]    name: 'AxiosError',
+2026-07-10T16:44:51.160498959Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:44:51.160504607Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:44:51.160510784Z [inf]  }
+2026-07-10T16:45:11.159016521Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:45:10   ERROR  [WebhookController] [object] {
+2026-07-10T16:45:11.159022760Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:45:11.159026539Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:45:11.159031493Z [inf]    hostName: undefined,
+2026-07-10T16:45:11.159036296Z [inf]    syscall: undefined,
+2026-07-10T16:45:11.159040160Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:45:11.159043623Z [inf]    isTimeout: false,
+2026-07-10T16:45:11.159047300Z [inf]    statusCode: 503,
+2026-07-10T16:45:11.159051586Z [inf]    error: undefined,
+2026-07-10T16:45:11.159055056Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:45:11.159058434Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:45:11.159063422Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:45:11.159066881Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:45:11.159070449Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:45:11.159073902Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:45:11.159077299Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:45:11.159080644Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:45:11.159084149Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:45:11.159087678Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:45:11.159096347Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:45:11.160734143Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:45:11.160744951Z [inf]    name: 'AxiosError',
+2026-07-10T16:45:11.160756196Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:45:11.160762185Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:45:11.160769296Z [inf]  }
+2026-07-10T16:45:11.944340851Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:45:11.944356706Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:45:11.944358069Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:45:11   ERROR  [WebhookController] [object] {
+2026-07-10T16:45:11.944366353Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:45:11.944369163Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:45:11.944376381Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:45:11.944378657Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:45:11.944386837Z [inf]    hostName: undefined,
+2026-07-10T16:45:11.944387486Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:45:11.944393656Z [inf]    syscall: undefined,
+2026-07-10T16:45:11.944399061Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:45:11.944404359Z [inf]    isTimeout: false,
+2026-07-10T16:45:11.944409267Z [inf]    statusCode: 503,
+2026-07-10T16:45:11.944414672Z [inf]    error: undefined,
+2026-07-10T16:45:11.944419661Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:45:11.944423724Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:45:11.944428527Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:45:11.944433944Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:45:11.944438286Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:45:11.944442623Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:45:11.945714321Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:45:11.945721796Z [inf]    name: 'AxiosError',
+2026-07-10T16:45:11.945726989Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:45:11.945731487Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:45:11.945735547Z [inf]  }
+2026-07-10T16:45:14.274712286Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:45:14   ERROR  [WebhookController] [object] {
+2026-07-10T16:45:14.274722505Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:45:14.274728054Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:45:14.274733673Z [inf]    hostName: undefined,
+2026-07-10T16:45:14.274739925Z [inf]    syscall: undefined,
+2026-07-10T16:45:14.274746048Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:45:14.274752332Z [inf]    isTimeout: false,
+2026-07-10T16:45:14.274759276Z [inf]    statusCode: 503,
+2026-07-10T16:45:14.274765794Z [inf]    error: undefined,
+2026-07-10T16:45:14.274772233Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:45:14.274778479Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:45:14.274784427Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:45:14.274789714Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:45:14.274798702Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:45:14.274803552Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:45:14.274808189Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:45:14.274811485Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:45:14.274815466Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:45:14.274818848Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:45:14.274823449Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:45:14.275559648Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:45:14.275565117Z [inf]    name: 'AxiosError',
+2026-07-10T16:45:14.275569845Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:45:14.275574908Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:45:14.275579662Z [inf]  }
+2026-07-10T16:45:34.273698783Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:45:24   ERROR  [WebhookController] [object] {
+2026-07-10T16:45:34.273708958Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:45:34.273713825Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:45:34.273718762Z [inf]    hostName: undefined,
+2026-07-10T16:45:34.273723212Z [inf]    syscall: undefined,
+2026-07-10T16:45:34.273728935Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:45:34.273733520Z [inf]    isTimeout: false,
+2026-07-10T16:45:34.273737686Z [inf]    statusCode: 503,
+2026-07-10T16:45:34.273742364Z [inf]    error: undefined,
+2026-07-10T16:45:34.273746453Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:45:34.273750856Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:45:34.273755155Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:45:34.273759136Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:45:34.273762949Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:45:34.273766833Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:45:34.273771484Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:45:34.273775843Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:45:34.273780336Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:45:34.273784059Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:45:34.273787825Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:45:34.275270091Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:45:34.275279389Z [inf]    name: 'AxiosError',
+2026-07-10T16:45:34.275284776Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:45:34.275289210Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:45:34.275293610Z [inf]  }
+2026-07-10T16:45:34.275298620Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:45:29   ERROR  [WebhookController] [object] {
+2026-07-10T16:45:34.275302732Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:45:34.275306586Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:45:34.275310515Z [inf]    hostName: undefined,
+2026-07-10T16:45:34.275315510Z [inf]    syscall: undefined,
+2026-07-10T16:45:34.275319851Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:45:34.275323959Z [inf]    isTimeout: false,
+2026-07-10T16:45:34.275329038Z [inf]    statusCode: 503,
+2026-07-10T16:45:34.275334489Z [inf]    error: undefined,
+2026-07-10T16:45:34.275340077Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:45:34.275345494Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:45:34.275350590Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:45:34.275356062Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:45:34.275361073Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:45:34.275366632Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:45:34.275373273Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:45:34.275378894Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:45:34.277701400Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:45:34.277703196Z [inf]    isTimeout: false,
+2026-07-10T16:45:34.277707841Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:45:34.277713646Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:45:34.277720482Z [inf]    statusCode: 503,
+2026-07-10T16:45:34.277721777Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:45:34.277727723Z [inf]    name: 'AxiosError',
+2026-07-10T16:45:34.277732680Z [inf]    error: undefined,
+2026-07-10T16:45:34.277735269Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:45:34.277739730Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:45:34.277746163Z [inf]  }
+2026-07-10T16:45:34.277747007Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:45:34.277753854Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:45:34   ERROR  [WebhookController] [object] {
+2026-07-10T16:45:34.277754728Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:45:34.277762651Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:45:34.277765030Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:45:34.277771590Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:45:34.277772351Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:45:34.277779629Z [inf]    hostName: undefined,
+2026-07-10T16:45:34.277780466Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:45:34.277785515Z [inf]    syscall: undefined,
+2026-07-10T16:45:34.277790549Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:45:34.278363490Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:45:34.278374004Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:45:34.278380255Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:45:34.278388638Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:45:34.278394149Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:45:34.278399723Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:45:34.278405238Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:45:34.278410179Z [inf]    name: 'AxiosError',
+2026-07-10T16:45:34.278415142Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:45:34.278421567Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:45:34.278426473Z [inf]  }
+2026-07-10T16:45:36.028173155Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:45:36.028184635Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:45:36.028190319Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:45:36.028195666Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:45:36.028201696Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:45:36.028206904Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:45:36.028212363Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:45:36.028219719Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:45:35   ERROR  [WebhookController] [object] {
+2026-07-10T16:45:36.028224970Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:45:36.028230027Z [inf]    message: 'Tentativa 10/10 falhou: Request failed with status code 503',
+2026-07-10T16:45:36.028236262Z [inf]    hostName: undefined,
+2026-07-10T16:45:36.028241450Z [inf]    syscall: undefined,
+2026-07-10T16:45:36.028246636Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:45:36.028251123Z [inf]    isTimeout: false,
+2026-07-10T16:45:36.028255653Z [inf]    statusCode: 503,
+2026-07-10T16:45:36.028260119Z [inf]    error: undefined,
+2026-07-10T16:45:36.028264645Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:45:36.028268852Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:45:36.028274098Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:45:36.028279751Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:45:36.029596678Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:45:36.029604247Z [inf]    name: 'AxiosError',
+2026-07-10T16:45:36.029608623Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:45:36.029613034Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:45:36.029617237Z [inf]  }
+2026-07-10T16:45:36.029621179Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:45:35   ERROR  [WebhookController] [object] {
+2026-07-10T16:45:36.029625088Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:45:36.029629214Z [inf]    message: 'Todas as tentativas falharam: Request failed with status code 503',
+2026-07-10T16:45:36.029633150Z [inf]    hostName: undefined,
+2026-07-10T16:45:36.029636909Z [inf]    syscall: undefined,
+2026-07-10T16:45:36.029640460Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:45:36.029644269Z [inf]    error: undefined,
+2026-07-10T16:45:36.029648198Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:45:36.029651856Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:45:36.029655850Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:45:36.029659973Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:45:36.029664016Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:45:36.029667881Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:45:36.029672030Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:45:36.029676975Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:45:36.030804205Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:45:36.030810276Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:45:36.030814849Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:45:36.030819780Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:45:36.030823900Z [inf]    name: 'AxiosError',
+2026-07-10T16:45:36.030827923Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:45:36.030832224Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:45:36.030836607Z [inf]  }
+2026-07-10T16:45:55.806460914Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:45:55.806468990Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:45:55.806474192Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:45:55.806479402Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:45:55.806497251Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:45:49   ERROR  [WebhookController] [object] {
+2026-07-10T16:45:55.806508179Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:45:55.806513977Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:45:55.806519032Z [inf]    hostName: undefined,
+2026-07-10T16:45:55.806523400Z [inf]    syscall: undefined,
+2026-07-10T16:45:55.806527985Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:45:55.806533493Z [inf]    isTimeout: false,
+2026-07-10T16:45:55.806540448Z [inf]    statusCode: 503,
+2026-07-10T16:45:55.806545337Z [inf]    error: undefined,
+2026-07-10T16:45:55.806550294Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:45:55.806554732Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:45:55.806559013Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:45:55.806563739Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:45:55.806569819Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:45:55.806574126Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:45:55.806578846Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:45:55.807651650Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:45:55.807654941Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:45:55.807661853Z [inf]    name: 'AxiosError',
+2026-07-10T16:45:55.807666872Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:45:55.807671668Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:45:55.807677617Z [inf]  }
+2026-07-10T16:45:55.807682173Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:45:51   ERROR  [WebhookController] [object] {
+2026-07-10T16:45:55.807687385Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:45:55.807692376Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:45:55.807697187Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:45:55.807698619Z [inf]    hostName: undefined,
+2026-07-10T16:45:55.807704190Z [inf]    syscall: undefined,
+2026-07-10T16:45:55.807710129Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:45:55.807712258Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:45:55.807716568Z [inf]    isTimeout: false,
+2026-07-10T16:45:55.807720449Z [inf]    statusCode: 503,
+2026-07-10T16:45:55.807724801Z [inf]    error: undefined,
+2026-07-10T16:45:55.807728801Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:45:55.807732976Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:45:55.807737253Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:45:55.807742510Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:45:55.807746558Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:45:55.809018892Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:45:55.809027120Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:45:55.809030632Z [inf]    error: undefined,
+2026-07-10T16:45:55.809033484Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:45:55.809040127Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:45:55.809041065Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:45:55.809046691Z [inf]    name: 'AxiosError',
+2026-07-10T16:45:55.809049044Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:45:55.809053578Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:45:55.809056053Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:45:55.809061134Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:45:55.809064323Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:45:55.809069356Z [inf]  }
+2026-07-10T16:45:55.809071861Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:45:55.809075118Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:45:51   ERROR  [WebhookController] [object] {
+2026-07-10T16:45:55.809079087Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:45:55.809082626Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:45:55.809086545Z [inf]    hostName: undefined,
+2026-07-10T16:45:55.809090668Z [inf]    syscall: undefined,
+2026-07-10T16:45:55.809095270Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:45:55.809098492Z [inf]    isTimeout: false,
+2026-07-10T16:45:55.809101945Z [inf]    statusCode: 503,
+2026-07-10T16:45:55.810418555Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:45:55.810427007Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:45:55.810432327Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:45:55.810437547Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:45:55.810443944Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:45:55.810448771Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:45:55.810452556Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:45:55.810457389Z [inf]    name: 'AxiosError',
+2026-07-10T16:45:55.810461591Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:45:55.810466172Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:45:55.810470699Z [inf]  }
+2026-07-10T16:45:57.126431354Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:45:57.126444727Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:45:57.126476467Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:45:56   ERROR  [WebhookController] [object] {
+2026-07-10T16:45:57.126482354Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:45:57.126487681Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:45:57.126492219Z [inf]    hostName: undefined,
+2026-07-10T16:45:57.126498524Z [inf]    syscall: undefined,
+2026-07-10T16:45:57.126504550Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:45:57.126510947Z [inf]    isTimeout: false,
+2026-07-10T16:45:57.126516172Z [inf]    statusCode: 503,
+2026-07-10T16:45:57.126521981Z [inf]    error: undefined,
+2026-07-10T16:45:57.126529340Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:45:57.126534760Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:45:57.126539783Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:45:57.126544362Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:45:57.126548731Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:45:57.126552906Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:45:57.126556774Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:45:57.126561306Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:45:57.126565474Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:45:57.127599295Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:45:57.127606627Z [inf]    name: 'AxiosError',
+2026-07-10T16:45:57.127611653Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:45:57.127615645Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:45:57.127620480Z [inf]  }
+2026-07-10T16:46:16.900702714Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:46:16   ERROR  [WebhookController] [object] {
+2026-07-10T16:46:16.900707367Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:46:16.900711774Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:46:16.900717896Z [inf]    hostName: undefined,
+2026-07-10T16:46:16.900722194Z [inf]    syscall: undefined,
+2026-07-10T16:46:16.900726984Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:46:16.900731057Z [inf]    isTimeout: false,
+2026-07-10T16:46:16.900735515Z [inf]    statusCode: 503,
+2026-07-10T16:46:16.900739973Z [inf]    error: undefined,
+2026-07-10T16:46:16.900744312Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:46:16.900748733Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:46:16.900752546Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:46:16.900756293Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:46:16.900760260Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:46:16.900765120Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:46:16.900769676Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:46:16.900773503Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:46:16.900778270Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:46:16.900782569Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:46:16.900786279Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:46:16.901836972Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:46:16.901843771Z [inf]    name: 'AxiosError',
+2026-07-10T16:46:16.901848924Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:46:16.901853617Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:46:16.901857780Z [inf]  }
+2026-07-10T16:46:36.901975334Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:46:28   ERROR  [WebhookController] [object] {
+2026-07-10T16:46:36.901982067Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:46:36.901986512Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:46:36.901990572Z [inf]    hostName: undefined,
+2026-07-10T16:46:36.901994503Z [inf]    syscall: undefined,
+2026-07-10T16:46:36.901998053Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:46:36.902001849Z [inf]    isTimeout: false,
+2026-07-10T16:46:36.902006126Z [inf]    statusCode: 503,
+2026-07-10T16:46:36.902010282Z [inf]    error: undefined,
+2026-07-10T16:46:36.902014228Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:46:36.902017867Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:46:36.902021914Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:46:36.902026661Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:46:36.902030819Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:46:36.902034743Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:46:36.902038610Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:46:36.902042252Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:46:36.902045952Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:46:36.902049548Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:46:36.902053622Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:46:36.904068265Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:46:36.904077357Z [inf]    name: 'AxiosError',
+2026-07-10T16:46:36.904083532Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:46:36.904088778Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:46:36.904094976Z [inf]  }
+2026-07-10T16:46:45.416496628Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:46:45   ERROR  [WebhookController] [object] {
+2026-07-10T16:46:45.416505513Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:46:45.416511073Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:46:45.416515584Z [inf]    hostName: undefined,
+2026-07-10T16:46:45.416521919Z [inf]    syscall: undefined,
+2026-07-10T16:46:45.416527844Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:46:45.416533013Z [inf]    isTimeout: false,
+2026-07-10T16:46:45.416537462Z [inf]    statusCode: 503,
+2026-07-10T16:46:45.416542030Z [inf]    error: undefined,
+2026-07-10T16:46:45.416545866Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:46:45.416549965Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:46:45.416554100Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:46:45.416558860Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:46:45.416563165Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:46:45.416567164Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:46:45.416572155Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:46:45.416576115Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:46:45.416580254Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:46:45.416584385Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:46:45.416588322Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:46:45.417284264Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:46:45.417290140Z [inf]    name: 'AxiosError',
+2026-07-10T16:46:45.417294885Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:46:45.417298897Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:46:45.417302880Z [inf]  }
+2026-07-10T16:46:46.756107535Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:46:46   ERROR  [WebhookController] [object] {
+2026-07-10T16:46:46.756115667Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:46:46.756121134Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:46:46.756125815Z [inf]    hostName: undefined,
+2026-07-10T16:46:46.756130661Z [inf]    syscall: undefined,
+2026-07-10T16:46:46.756136187Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:46:46.756140467Z [inf]    isTimeout: false,
+2026-07-10T16:46:46.756144504Z [inf]    statusCode: 503,
+2026-07-10T16:46:46.756149030Z [inf]    error: undefined,
+2026-07-10T16:46:46.756153636Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:46:46.756158576Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:46:46.756164146Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:46:46.756168709Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:46:46.756173273Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:46:46.756178663Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:46:46.756183442Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:46:46.756189368Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:46:46.756194623Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:46:46.756200322Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:46:46.756205605Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:46:46.756861574Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:46:46.756867968Z [inf]    name: 'AxiosError',
+2026-07-10T16:46:46.756873250Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:46:46.756878407Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:46:46.756883156Z [inf]  }
+2026-07-10T16:46:48.010689589Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:46:48   ERROR  [WebhookController] [object] {
+2026-07-10T16:46:48.010696845Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:46:48.010711769Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:46:48.010717119Z [inf]    hostName: undefined,
+2026-07-10T16:46:48.010723174Z [inf]    syscall: undefined,
+2026-07-10T16:46:48.010727647Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:46:48.010731788Z [inf]    isTimeout: false,
+2026-07-10T16:46:48.010735907Z [inf]    statusCode: 503,
+2026-07-10T16:46:48.010740054Z [inf]    error: undefined,
+2026-07-10T16:46:48.010744619Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:46:48.010749113Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:46:48.010753602Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:46:48.010757996Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:46:48.010763942Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:46:48.010768330Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:46:48.010772878Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:46:48.010777400Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:46:48.010781565Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:46:48.010785423Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:46:48.010789044Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:46:48.011608916Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:46:48.011615270Z [inf]    name: 'AxiosError',
+2026-07-10T16:46:48.011621618Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:46:48.011627143Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:46:48.011631820Z [inf]  }
+2026-07-10T16:46:48.986067255Z [inf]  [Evolution API]  375 - Fri Jul 10 2026 13:46:48   ERROR  [WebhookController] [object] {
+2026-07-10T16:46:48.986076669Z [inf]    local: 'p.sendData-Webhook',
+2026-07-10T16:46:48.986081719Z [inf]    message: 'Tentativa 9/10 falhou: Request failed with status code 503',
+2026-07-10T16:46:48.986086825Z [inf]    hostName: undefined,
+2026-07-10T16:46:48.986091317Z [inf]    syscall: undefined,
+2026-07-10T16:46:48.986096418Z [inf]    code: 'ERR_BAD_RESPONSE',
+2026-07-10T16:46:48.986101194Z [inf]    isTimeout: false,
+2026-07-10T16:46:48.986105517Z [inf]    statusCode: 503,
+2026-07-10T16:46:48.986111461Z [inf]    error: undefined,
+2026-07-10T16:46:48.986116175Z [inf]    stack: 'AxiosError: Request failed with status code 503\n' +
+2026-07-10T16:46:48.986122011Z [inf]      '    at settle (/evolution/node_modules/axios/dist/node/axios.cjs:2106:12)\n' +
+2026-07-10T16:46:48.986128074Z [inf]      '    at IncomingMessage.handleStreamEnd (/evolution/node_modules/axios/dist/node/axios.cjs:3491:11)\n' +
+2026-07-10T16:46:48.986133977Z [inf]      '    at IncomingMessage.emit (node:events:521:24)\n' +
+2026-07-10T16:46:48.986139991Z [inf]      '    at endReadableNT (node:internal/streams/readable:1729:12)\n' +
+2026-07-10T16:46:48.986145380Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n' +
+2026-07-10T16:46:48.986150651Z [inf]      '    at Axios.request (/evolution/node_modules/axios/dist/node/axios.cjs:4731:41)\n' +
+2026-07-10T16:46:48.986156637Z [inf]      '    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n' +
+2026-07-10T16:46:48.986162494Z [inf]      '    at async _o.retryWebhookRequest (/evolution/dist/main.js:316:65442)\n' +
+2026-07-10T16:46:48.986167575Z [inf]      '    at async _o.emit (/evolution/dist/main.js:316:64253)\n' +
+2026-07-10T16:46:48.986173130Z [inf]      '    at async Po.emit (/evolution/dist/main.js:316:70159)\n' +
+2026-07-10T16:46:48.987189186Z [inf]      '    at async io.sendDataWebhook (/evolution/dist/main.js:174:17320)',
+2026-07-10T16:46:48.987194293Z [inf]    name: 'AxiosError',
+2026-07-10T16:46:48.987199704Z [inf]    url: 'https://icy-wolves-create.loca.lt/webhook',
+2026-07-10T16:46:48.987203373Z [inf]    server_url: 'https://whatsapp-api-production-8261.up.railway.app'
+2026-07-10T16:46:48.987206715Z [inf]  }
