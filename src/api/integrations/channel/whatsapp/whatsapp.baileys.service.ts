@@ -1384,15 +1384,20 @@ export class BaileysStartupService extends ChannelStartupService {
               this.logger.info(`Update readed messages duplicated ignored [avoid deadlock]: ${messageKey}`);
             }
 
-            if (isMedia) {
+            // Skipping the S3 upload must not skip the rest of the handler. This
+            // check used to `return` from inside the try below, which aborted the whole
+            // messages.upsert handler and therefore skipped sendDataWebhook(
+            // MESSAGES_UPSERT) further down — inbound videos never reached any webhook
+            // consumer while S3 was enabled and S3_SAVE_VIDEO was off (the default).
+            const skipVideoUpload = isVideo && !this.configService.get<S3>('S3').SAVE_VIDEO;
+
+            if (isMedia && skipVideoUpload) {
+              this.logger.warn('Video upload is disabled. Skipping video upload.');
+            }
+
+            if (isMedia && !skipVideoUpload) {
               if (this.configService.get<S3>('S3').ENABLE) {
                 try {
-                  if (isVideo && !this.configService.get<S3>('S3').SAVE_VIDEO) {
-                    this.logger.warn('Video upload is disabled. Skipping video upload.');
-                    // Skip video upload by returning early from this block
-                    return;
-                  }
-
                   const message: any = received;
 
                   // Verificação adicional para garantir que há conteúdo de mídia real
@@ -2447,11 +2452,21 @@ export class BaileysStartupService extends ChannelStartupService {
       const isVideo = messageSent?.message?.videoMessage;
 
       if (this.configService.get<Chatwoot>('CHATWOOT').ENABLED && this.localChatwoot?.enabled && !isIntegration) {
-        this.chatwootService.eventWhatsapp(
+        // Await and record the ids, exactly as the inbound messages.upsert path does.
+        // Without this every fromMe message is persisted with chatwootMessageId = NULL,
+        // so when the customer later replies to it in WhatsApp, getReplyToIds() cannot
+        // map contextInfo.stanzaId to a Chatwoot message and the reply context is lost.
+        const chatwootSentMessage = await this.chatwootService.eventWhatsapp(
           Events.SEND_MESSAGE,
           { instanceName: this.instance.name, instanceId: this.instanceId },
           messageRaw,
         );
+
+        if (chatwootSentMessage?.id) {
+          messageRaw.chatwootMessageId = chatwootSentMessage.id;
+          messageRaw.chatwootInboxId = chatwootSentMessage.inbox_id;
+          messageRaw.chatwootConversationId = chatwootSentMessage.conversation_id;
+        }
       }
 
       if (this.configService.get<Openai>('OPENAI').ENABLED && messageRaw?.message?.audioMessage) {
