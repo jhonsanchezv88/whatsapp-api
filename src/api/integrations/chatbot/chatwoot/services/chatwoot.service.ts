@@ -1314,9 +1314,13 @@ export class ChatwootService {
 
   public async receiveWebhook(instance: InstanceDto, body: any) {
     const webhookStart = Date.now();
+    const chatwootCreatedAt = body.created_at
+      ? typeof body.created_at === 'number'
+        ? body.created_at * 1000
+        : new Date(body.created_at).getTime()
+      : null;
+    const webhookLatencyMs = chatwootCreatedAt ? webhookStart - chatwootCreatedAt : null;
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
       const client = await this.clientCw(instance);
 
       if (!client) {
@@ -1461,7 +1465,7 @@ export class ChatwootService {
         }
 
         this.logger.info(
-          `CHATWOOT WEBHOOK: outgoing message received for ${chatId} (msg=${body.id}, inbox=${body.inbox?.id}, conversation=${body.conversation?.id}), elapsed_since_webhook=${Date.now() - webhookStart}ms`
+          `CHATWOOT WEBHOOK: outgoing message received for ${chatId} (msg=${body.id}, inbox=${body.inbox?.id}, conversation=${body.conversation?.id}), elapsed_since_webhook=${Date.now() - webhookStart}ms, webhook_latency_ms=${webhookLatencyMs ?? 'unknown'}`
         );
 
         let formatText: string;
