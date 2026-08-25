@@ -629,6 +629,46 @@ export class ChatwootService {
     return filterPayload;
   }
 
+  /**
+   * createConversation() swallows transport errors and returns null, and the
+   * messages.upsert handler then drops the inbound message entirely. A single
+   * transient Chatwoot failure (502/504 during a restart or a slow request)
+   * therefore loses a customer message with no retry and no dead letter.
+   *
+   * Retry with exponential backoff before giving up. createConversation re-checks
+   * its own cache on each call, so retrying is cheap when it succeeds.
+   */
+  private async createConversationWithRetry(
+    instance: InstanceDto,
+    body: any,
+    attempts = 5,
+  ): Promise<number | null> {
+    for (let attempt = 1; attempt <= attempts; attempt++) {
+      const conversationId = await this.createConversation(instance, body);
+
+      if (conversationId) {
+        if (attempt > 1) {
+          this.logger.info(`createConversation succeeded on attempt ${attempt}/${attempts}`);
+        }
+        return conversationId;
+      }
+
+      if (attempt < attempts) {
+        // Exponential backoff capped at 8s: 1s + 2s + 4s + 8s = 15s of cover, which
+        // rides out proxy blips and most of a Chatwoot container restart. Deliberately
+        // bounded — this runs inside the awaited messages.upsert handler, so waiting
+        // longer would stall the instance's inbound pipeline behind one message.
+        const backoffMs = Math.min(1000 * 2 ** (attempt - 1), 8000);
+        this.logger.warn(
+          `createConversation returned null (attempt ${attempt}/${attempts}) for ${body?.key?.remoteJid}; retrying in ${backoffMs}ms`,
+        );
+        await new Promise((resolve) => setTimeout(resolve, backoffMs));
+      }
+    }
+
+    return null;
+  }
+
   public async createConversation(instance: InstanceDto, body: any) {
     const isLid = body.key.addressingMode === 'lid';
     const isGroup = body.key.remoteJid.endsWith('@g.us');
@@ -2071,10 +2111,14 @@ export class ChatwootService {
           return;
         }
 
-        const getConversation = await this.createConversation(instance, body);
+        const getConversation = await this.createConversationWithRetry(instance, body);
 
         if (!getConversation) {
-          this.logger.warn('conversation not found');
+          // Loud, greppable: this is a customer message being dropped on the floor.
+          this.logger.error(
+            `DROPPED MESSAGE: could not resolve a Chatwoot conversation for ${body?.key?.remoteJid} ` +
+              `(messageId=${body?.key?.id}, instance=${instance.instanceName}) after retries`,
+          );
           return;
         }
 
