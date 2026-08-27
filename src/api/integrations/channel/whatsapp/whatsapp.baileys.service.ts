@@ -157,6 +157,7 @@ import { useVoiceCallsBaileys } from './voiceCalls/useVoiceCallsBaileys';
 
 export interface ExtendedIMessageKey extends proto.IMessageKey {
   remoteJidAlt?: string;
+  remoteJidLid?: string;
   participantAlt?: string;
   server_id?: string;
   isViewOnce?: boolean;
@@ -1481,6 +1482,13 @@ export class BaileysStartupService extends ChannelStartupService {
 
           sendTelemetry(`received.message.${messageRaw.messageType ?? 'unknown'}`);
           if (messageRaw.key.remoteJid?.includes('@lid') && messageRaw.key.remoteJidAlt) {
+            // Keep the LID before swapping in the phone JID. Downstream consumers expect
+            // remoteJid to be the phone number, but overwriting it destroys the only copy
+            // of the LID in the payload — and WhatsApp will only ever hand us this pairing
+            // once, on a message addressed by LID. logicfy stores both on one contact, so
+            // the same person stopped being two records depending on which JID a given
+            // message happened to arrive on.
+            messageRaw.key.remoteJidLid = messageRaw.key.remoteJid;
             messageRaw.key.remoteJid = messageRaw.key.remoteJidAlt;
           }
           console.log(messageRaw);
