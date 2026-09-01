@@ -830,9 +830,11 @@ export class ChatwootService {
             this.logger.verbose(
               `LOGICFY: reusing LID-keyed contact ${lidContact.id} (${body.key.remoteJidLid}) for phone ${chatId}`,
             );
-            const updatedContact = await this.updateContact(instance, lidContact.id, {
+            // Cast: the SDK types contacts.update() as void, but it resolves with
+            // the updated contact (updateContact also returns null on failure).
+            const updatedContact = (await this.updateContact(instance, lidContact.id, {
               phone_number: `+${chatId}`,
-            });
+            })) as any;
             contact = updatedContact || lidContact;
           }
         }
