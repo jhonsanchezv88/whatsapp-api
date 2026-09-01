@@ -812,6 +812,31 @@ export class ChatwootService {
         this.logger.verbose(`Searching contact for: ${chatId}`);
         let contact = await this.findContact(instance, chatId);
 
+        // LOGICFY: a phone-addressed message can belong to a customer whose Chatwoot
+        // contact is keyed by their LID (identifier "<lid>@lid", no phone_number) —
+        // typically the owner's own fromMe reply to a LID-routed chat, where WhatsApp
+        // reveals the phone even though the customer's messages never did. Without this
+        // lookup a SECOND, phone-keyed contact + conversation was created next to the
+        // one the AI conversation lives in (logicfy production conv #111/#112,
+        // 2026-09-01). The Baileys layer stashes the LID in key.remoteJidLid before
+        // swapping in the phone JID; use it to find and reuse the existing contact,
+        // teaching it the phone number so future phone lookups also resolve to it.
+        // The identifier deliberately stays "<lid>@lid": logicfy's manual LID delivery
+        // locates the contact by that identifier, and changing it would split the
+        // customer into two contacts all over again.
+        if (!contact && !isGroup && body.key?.remoteJidLid) {
+          const lidContact = await this.findContactByIdentifier(instance, body.key.remoteJidLid);
+          if (lidContact) {
+            this.logger.verbose(
+              `LOGICFY: reusing LID-keyed contact ${lidContact.id} (${body.key.remoteJidLid}) for phone ${chatId}`,
+            );
+            const updatedContact = await this.updateContact(instance, lidContact.id, {
+              phone_number: `+${chatId}`,
+            });
+            contact = updatedContact || lidContact;
+          }
+        }
+
         if (contact) {
           this.logger.verbose(`Found contact: ID:${contact.id} - Name:${contact.name}`);
           if (!body.key.fromMe) {
