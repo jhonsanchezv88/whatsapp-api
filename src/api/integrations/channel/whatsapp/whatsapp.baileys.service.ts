@@ -1481,6 +1481,24 @@ export class BaileysStartupService extends ChannelStartupService {
           this.logger.verbose(messageRaw);
 
           sendTelemetry(`received.message.${messageRaw.messageType ?? 'unknown'}`);
+          // LOGICFY: a LID-addressed message often arrives with no remoteJidAlt even
+          // though Baileys already knows the phone from its LID↔PN mapping store (the
+          // pairing gets learned from contact sync and earlier messages). Ask the store
+          // so the swap below can run: the Chatwoot contact is then created WITH the
+          // phone number, and every downstream consumer (native integration, logicfy)
+          // sees one identity instead of a phone-less "<lid>@lid" contact. Best-effort:
+          // an unknown mapping leaves the message exactly as it was.
+          if (messageRaw.key.remoteJid?.includes('@lid') && !messageRaw.key.remoteJidAlt) {
+            try {
+              const pnJid = await this.client.signalRepository.lidMapping.getPNForLID(messageRaw.key.remoteJid);
+              if (pnJid) {
+                messageRaw.key.remoteJidAlt = pnJid;
+                this.logger.verbose(`LOGICFY: resolved phone ${pnJid} for LID ${messageRaw.key.remoteJid} from the mapping store`);
+              }
+            } catch (error) {
+              this.logger.verbose(`LOGICFY: LID→PN lookup failed for ${messageRaw.key.remoteJid}: ${error?.message}`);
+            }
+          }
           if (messageRaw.key.remoteJid?.includes('@lid') && messageRaw.key.remoteJidAlt) {
             // Keep the LID before swapping in the phone JID. Downstream consumers expect
             // remoteJid to be the phone number, but overwriting it destroys the only copy

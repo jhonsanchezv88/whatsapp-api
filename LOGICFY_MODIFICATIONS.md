@@ -24,6 +24,16 @@ of the phone↔LID pairing WhatsApp will ever volunteer. We stash it first:
 merge contact identities; remove this and contacts silently split into two rows again.
 Also declares `remoteJidLid?: string` on the key type (~line 160).
 
+### Resolve the phone for LID-only messages from Baileys' mapping store — 2026-09-01
+`src/api/integrations/channel/whatsapp/whatsapp.baileys.service.ts` (messages.upsert,
+just before the LID swap)
+
+A LID-addressed message often carries no `remoteJidAlt` even though Baileys already
+knows the phone (`signalRepository.lidMapping.getPNForLID`, learned from contact sync
+and earlier traffic). We fill `remoteJidAlt` from the store so the swap below runs and
+the Chatwoot contact is created WITH the phone number instead of as a phone-less
+`<lid>@lid` record. Best-effort — an unknown mapping changes nothing.
+
 ### Reuse the LID-keyed Chatwoot contact for phone-addressed messages — 2026-09-01
 `src/api/integrations/chatbot/chatwoot/services/chatwoot.service.ts`
 (`createConversation`, after the `findContact(chatId)` miss)
