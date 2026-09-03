@@ -672,7 +672,14 @@ export class ChatwootService {
   public async createConversation(instance: InstanceDto, body: any) {
     const isLid = body.key.addressingMode === 'lid';
     const isGroup = body.key.remoteJid.endsWith('@g.us');
-    const phoneNumber = isLid && !isGroup ? body.key.remoteJidAlt : body.key.remoteJid;
+    // LOGICFY: remoteJidAlt is only present when WhatsApp (or the LID mapping store)
+    // knows the phone behind the LID. For a LID-only sender it is undefined, and
+    // `phoneNumber.split('@')` at the chatId derivation below crashed — five retries,
+    // then DROPPED MESSAGE, for every inbound from an unmapped-LID customer
+    // (staging conv 160, 2026-09-03 05:28Z). Falling back to the LID itself restores
+    // the long-standing behaviour: the contact is filed under the LID, which the
+    // whole logicfy pipeline already understands.
+    const phoneNumber = isLid && !isGroup ? body.key.remoteJidAlt || body.key.remoteJid : body.key.remoteJid;
     const { remoteJid } = body.key;
     const cacheKey = `${instance.instanceName}:createConversation-${remoteJid}`;
     const lockKey = `${instance.instanceName}:lock:createConversation-${remoteJid}`;

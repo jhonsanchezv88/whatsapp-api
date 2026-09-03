@@ -95,3 +95,14 @@ around the outbound path, added while hunting a delivery delay.
    and the LID-contact reuse block.
 4. Grep for `LOGICFY:` — all inline fork comments carry that marker.
 5. Update this file's entries and date.
+
+## `chatwoot.service.ts` — `createConversation`: unmapped-LID fallback (2026-09-03)
+
+`phoneNumber` is `remoteJidAlt` for LID-addressed messages, and `remoteJidAlt` only
+exists when the phone behind the LID is known. For a LID-only sender it was
+`undefined`, and the chatId derivation (`phoneNumber.split('@')`) threw — five retries,
+then `DROPPED MESSAGE`, for **every inbound message** from such a customer. Introduced
+by upstream's `946dcaeb` LID handling; surfaced when staging first deployed develop
+HEAD after the Railway migration. The fix falls back to the LID itself
+(`remoteJidAlt || remoteJid`), restoring the long-standing file-under-LID behaviour
+the logicfy pipeline already handles. Marked `LOGICFY:` inline.
