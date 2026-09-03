@@ -723,10 +723,24 @@ export class BaileysStartupService extends ChannelStartupService {
 
   public async connectToWhatsapp(number?: string): Promise<WASocket> {
     try {
-      this.loadChatwoot();
-      this.loadSettings();
-      this.loadWebhook();
-      this.loadProxy();
+      // LOGICFY: these were fire-and-forget. A boot-time Prisma hiccup rejected the
+      // loadChatwoot() promise silently, leaving localChatwoot at { enabled: false }
+      // in memory while the DB row said enabled — so the native Chatwoot integration
+      // was dead for the instance until the next reconnect, and every inbound message
+      // was invisibly dropped (staging, 2026-09-03: conv 209 inbound reached the
+      // Message table but never Chatwoot). Await them, and give loadChatwoot one
+      // retry: it gates all inbound delivery, so one transient DB error must not
+      // disable it for the whole life of the connection.
+      try {
+        await this.loadChatwoot();
+      } catch (error) {
+        this.logger.warn(`loadChatwoot failed (${error?.message}); retrying once`);
+        await new Promise((r) => setTimeout(r, 2000));
+        await this.loadChatwoot();
+      }
+      await this.loadSettings();
+      await this.loadWebhook();
+      await this.loadProxy();
 
       // Remontar o messageProcessor para garantir que está funcionando após reconexão
       this.messageProcessor.mount({

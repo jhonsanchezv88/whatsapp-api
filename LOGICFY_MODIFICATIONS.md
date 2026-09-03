@@ -117,3 +117,13 @@ sent from Chatwoot failed** (AxiosError 404) and never reached WhatsApp. `sendAt
 is now preceded by `waitForAttachment(data_url)`: a cheap Range-probe with backoff
 (0/0.3/0.7/1.5/3/6s); on timeout it proceeds and lets the existing error handling fire,
 so a genuinely missing file still surfaces as before.
+
+## `whatsapp.baileys.service.ts` — `connectToWhatsapp`: await the config loaders (2026-09-03)
+
+`loadChatwoot()` / `loadSettings()` / `loadWebhook()` / `loadProxy()` were fired without
+await or catch. A boot-time Prisma hiccup rejected `loadChatwoot()` silently, leaving
+`localChatwoot` at `{ enabled: false }` in memory while the DB row said enabled — the
+native Chatwoot integration was dead for the instance until its next reconnect, and
+every inbound message was invisibly dropped (reached the `Message` table, never
+Chatwoot). Now awaited, with one retry for `loadChatwoot` since it gates all inbound
+delivery. Recovery without a deploy: re-POST `/chatwoot/set` + `/instance/restart`.
