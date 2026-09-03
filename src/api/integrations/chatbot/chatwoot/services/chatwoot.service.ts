@@ -638,6 +638,40 @@ export class ChatwootService {
    * Retry with exponential backoff before giving up. createConversation re-checks
    * its own cache on each call, so retrying is cheap when it succeeds.
    */
+  // LOGICFY: Chatwoot fires the message webhook at commit, but the attachment's
+  // upload to object storage can land moments LATER — the storage 404s if fetched
+  // immediately. Over the public internet the extra latency hid the race; on Railway
+  // private networking we fetch within ~300ms and lose it, so every real photo or
+  // video sent from Chatwoot failed with AxiosError 404 and never reached WhatsApp
+  // (staging conv 209, 2026-09-03 06:04Z — R2 returned 404 for a key that existed
+  // seconds later). Waiting for the object with backoff closes the race; a Range
+  // request keeps the probe cheap. On timeout we proceed anyway and let the existing
+  // send-error handling fire, so a genuinely missing file still surfaces.
+  private async waitForAttachment(url: string): Promise<void> {
+    const delays = [0, 300, 700, 1500, 3000, 6000];
+    for (let i = 0; i < delays.length; i++) {
+      if (delays[i]) await new Promise((r) => setTimeout(r, delays[i]));
+      try {
+        const res = await axios.get(url, {
+          headers: { Range: 'bytes=0-0' },
+          responseType: 'arraybuffer',
+          validateStatus: () => true,
+        });
+        if (res.status < 400) {
+          if (i > 0) {
+            this.logger.info(`waitForAttachment: ready after ${i + 1} attempt(s)`);
+          }
+          return;
+        }
+        this.logger.warn(
+          `waitForAttachment: ${res.status} for attachment (attempt ${i + 1}/${delays.length})`,
+        );
+      } catch (error) {
+        this.logger.warn(`waitForAttachment: ${error?.message} (attempt ${i + 1}/${delays.length})`);
+      }
+    }
+  }
+
   private async createConversationWithRetry(
     instance: InstanceDto,
     body: any,
@@ -1567,6 +1601,7 @@ export class ChatwootService {
               };
 
               const attachmentSendStart = Date.now();
+              await this.waitForAttachment(attachment.data_url);
               const messageSent = await this.sendAttachment(
                 waInstance,
                 chatId,

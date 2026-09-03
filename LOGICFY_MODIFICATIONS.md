@@ -106,3 +106,14 @@ by upstream's `946dcaeb` LID handling; surfaced when staging first deployed deve
 HEAD after the Railway migration. The fix falls back to the LID itself
 (`remoteJidAlt || remoteJid`), restoring the long-standing file-under-LID behaviour
 the logicfy pipeline already handles. Marked `LOGICFY:` inline.
+
+## `chatwoot.service.ts` — `waitForAttachment`: outbound media upload race (2026-09-03)
+
+Chatwoot fires the message webhook at commit, but the attachment's upload to object
+storage (R2) can complete moments later — the storage 404s if fetched immediately.
+Over the public internet the cross-project latency hid the race; on Railway private
+networking Evolution fetches within ~300ms and loses it, so **every real photo/video
+sent from Chatwoot failed** (AxiosError 404) and never reached WhatsApp. `sendAttachment`
+is now preceded by `waitForAttachment(data_url)`: a cheap Range-probe with backoff
+(0/0.3/0.7/1.5/3/6s); on timeout it proceeds and lets the existing error handling fire,
+so a genuinely missing file still surfaces as before.
