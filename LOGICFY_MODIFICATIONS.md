@@ -1,6 +1,6 @@
 # Logicfy modifications to Evolution API
 
-_Last updated: 2026-09-01. Fork of Evolution API v2.3.7 (`jhonsanchezv88/whatsapp-api`)._
+_Last updated: 2026-09-03. Fork of Evolution API v2.3.7 (`jhonsanchezv88/whatsapp-api`)._
 
 This is the authoritative list of every change this fork carries on top of upstream
 Evolution API. **Read it before merging upstream** — these are the sites that will
@@ -59,6 +59,27 @@ the customer's message was silently dropped.
 `whatsapp.baileys.service.ts` — fromMe messages now carry their Chatwoot message id
 (logicfy's AI-echo detection matches on it), and a skipped S3 video upload no longer
 aborts the whole message handler.
+
+### Echo-check the outgoing message's OWN source_id — 2026-09-03
+`chatwoot.service.ts` — `receiveWebhook()`, outgoing branch. Upstream skipped an
+outgoing webhook as a "device echo" when `conversation.messages[0].source_id` started
+with `WAID:` — but that slot holds the conversation's **latest** message at
+webhook-dispatch time (~2s after creation), not necessarily the message the webhook is
+about. A customer message landing in that window put its own WAID there and a genuine
+composer/AI send was silently dropped (production conv 67, 2026-09-03 14:56Z — the
+owner's payment link never reached the customer). Now we read `body.source_id`, falling
+back to the entry in `conversation.messages` whose id matches `body.id`.
+
+### Fix findContactByIdentifier — it always threw — 2026-09-03
+`chatwoot.service.ts` — the function called `(client as any).get('contacts/search')` /
+`.post('contacts/filter')`, methods ChatwootClient does not have, so **every** call
+raised `TypeError: t.get is not a function`. Both callers broke: the LID-keyed contact
+reuse (section 1) and createContact's 422 "already exists" fallback — the TypeError
+escaped that fallback, defeated all five createConversation retries, and inbound
+messages from existing LID contacts were dropped (production 2026-09-03, User271 /
+User219 instances). Rewritten with `client.contacts.search()` + a raw
+`contacts/filter` request (the same patterns `findContact()` uses), each wrapped so a
+failed lookup degrades to null instead of throwing.
 
 ### Reject invalid import DB URI — `683b83e2`
 `chatwoot.service.ts` — a malformed `CHATWOOT_IMPORT_DATABASE_CONNECTION_URI` produced

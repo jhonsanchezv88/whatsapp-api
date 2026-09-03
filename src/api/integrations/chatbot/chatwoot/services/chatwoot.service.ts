@@ -433,42 +433,47 @@ export class ChatwootService {
       return null;
     }
 
-    // Direct search by query (q) - most common way to search by identifier/email/phone
-    const contact = (await (client as any).get('contacts/search', {
-      params: {
+    // LOGICFY: this used to call `(client as any).get('contacts/search', …)` and
+    // `.post('contacts/filter', …)` — but ChatwootClient has no generic get/post
+    // methods, so EVERY call threw `TypeError: t.get is not a function`. The
+    // TypeError escaped createContact's 422 fallback, failed all five
+    // createConversation retries, and inbound messages from existing LID contacts
+    // were DROPPED (production 2026-09-03, User271/User219 instances). Use the
+    // same SDK/raw-request patterns findContact() uses, and degrade to null
+    // ("not found") instead of throwing.
+    try {
+      const contact = (await client.contacts.search({
+        accountId: this.provider.accountId,
         q: identifier,
-        sort: 'name',
-      },
-    })) as any;
-
-    if (contact && contact.data && contact.data.payload && contact.data.payload.length > 0) {
-      return contact.data.payload[0];
+      })) as any;
+      const bySearch = contact?.payload?.find((c: any) => c?.identifier === identifier);
+      if (bySearch) {
+        return bySearch;
+      }
+    } catch (error) {
+      this.logger.warn(`findContactByIdentifier: search failed for ${identifier}: ${error}`);
     }
 
-    // Fallback for older API versions or different response structures
-    if (contact && contact.payload && contact.payload.length > 0) {
-      return contact.payload[0];
-    }
-
-    // Try search by attribute
-    const contactByAttr = (await (client as any).post('contacts/filter', {
-      payload: [
-        {
-          attribute_key: 'identifier',
-          filter_operator: 'equal_to',
-          values: [identifier],
-          query_operator: null,
+    try {
+      const contactByAttr = (await chatwootRequest(this.getClientCwConfig(), {
+        method: 'POST',
+        url: `/api/v1/accounts/${this.provider.accountId}/contacts/filter`,
+        body: {
+          payload: [
+            {
+              attribute_key: 'identifier',
+              filter_operator: 'equal_to',
+              values: [identifier],
+              query_operator: null,
+            },
+          ],
         },
-      ],
-    })) as any;
-
-    if (contactByAttr && contactByAttr.payload && contactByAttr.payload.length > 0) {
-      return contactByAttr.payload[0];
-    }
-
-    // Check inside data property if using axios interceptors wrapper
-    if (contactByAttr && contactByAttr.data && contactByAttr.data.payload && contactByAttr.data.payload.length > 0) {
-      return contactByAttr.data.payload[0];
+      })) as any;
+      if (contactByAttr?.payload?.length > 0) {
+        return contactByAttr.payload.find((c: any) => c?.identifier === identifier) ?? contactByAttr.payload[0];
+      }
+    } catch (error) {
+      this.logger.warn(`findContactByIdentifier: filter failed for ${identifier}: ${error}`);
     }
 
     return null;
@@ -1563,7 +1568,17 @@ export class ChatwootService {
       }
 
       if (body.message_type === 'outgoing' && body?.conversation?.messages?.length && chatId !== '123456') {
-        if (body?.conversation?.messages[0]?.source_id?.substring(0, 5) === 'WAID:') {
+        // Echo check: skip only when THIS outgoing message originated on WhatsApp
+        // (Evolution stamps source_id "WAID:<key.id>" on messages it relays into
+        // Chatwoot). The upstream code read conversation.messages[0].source_id —
+        // but that slot holds the conversation's LATEST message at webhook-dispatch
+        // time, not necessarily this one. Chatwoot dispatches webhooks ~2s after
+        // message creation, so a customer message landing in that window put its
+        // own WAID source_id in messages[0] and this branch silently dropped a
+        // genuine agent/AI send (production 2026-09-03, conversation 67).
+        const ownSourceId =
+          body.source_id ?? body?.conversation?.messages?.find((m) => m?.id === body.id)?.source_id;
+        if (ownSourceId?.substring(0, 5) === 'WAID:') {
           return { message: 'bot' };
         }
 
