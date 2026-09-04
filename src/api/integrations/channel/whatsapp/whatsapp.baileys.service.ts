@@ -2856,11 +2856,23 @@ export class BaileysStartupService extends ChannelStartupService {
           : Buffer.from(mediaMessage.media, 'base64');
       }
 
+      // LOGICFY: time the upload leg on its own; the rest of prepareWAMessageMedia is
+      // the fetch from the source URL plus encryption (and a thumbnail for video).
+      let uploadMs = 0;
+      const timedUpload: typeof this.client.waUploadToServer = async (stream, opts) => {
+        const uploadStart = Date.now();
+        try {
+          return await this.client.waUploadToServer(stream, opts);
+        } finally {
+          uploadMs += Date.now() - uploadStart;
+        }
+      };
+
       const prepareMedia = await prepareWAMessageMedia(
         {
           [type]: mediaInput,
         } as any,
-        { upload: this.client.waUploadToServer },
+        { upload: timedUpload },
       );
 
       const mediaType = mediaMessage.mediatype + 'Message';
@@ -2957,11 +2969,14 @@ export class BaileysStartupService extends ChannelStartupService {
         prepareMedia[mediaType].gifPlayback = false;
       }
 
-      return generateWAMessageFromContent(
+      const generated = generateWAMessageFromContent(
         '',
         { [mediaType]: { ...prepareMedia[mediaType] } },
         { userJid: this.instance.wuid },
       );
+      // LOGICFY: read by mediaMessage() for the timing line; harmless to the send.
+      (generated as any).uploadMs = uploadMs;
+      return generated;
     } catch (error) {
       this.logger.error(error);
       throw new InternalServerErrorException(error?.toString() || error);
@@ -3058,8 +3073,16 @@ export class BaileysStartupService extends ChannelStartupService {
 
     if (file) mediaData.media = file.buffer.toString('base64');
 
+    // LOGICFY: per-leg timing. A 31s video send on staging (2026-09-04) could not be
+    // explained because only the total was logged. `prepare` is fetch from the source
+    // URL + encrypt (+ thumbnail for video) + upload to WhatsApp's media servers, with
+    // the upload leg measured on its own; `send` is the message itself.
+    const prepareStart = Date.now();
     const generate = await this.prepareMediaMessage(mediaData);
+    const prepareMs = Date.now() - prepareStart;
+    const uploadMs = (generate as any).uploadMs;
 
+    const sendStart = Date.now();
     const mediaSent = await this.sendMessageWithTyping(
       data.number,
       { ...generate.message },
@@ -3071,6 +3094,11 @@ export class BaileysStartupService extends ChannelStartupService {
         mentioned: data?.mentioned,
       },
       isIntegration,
+    );
+    this.logger.info(
+      `MEDIA TIMING: ${data.mediatype} to ${data.number} prepare=${prepareMs}ms ` +
+        `(fetch+encrypt=${typeof uploadMs === 'number' ? prepareMs - uploadMs : 'n/a'}ms ` +
+        `upload=${typeof uploadMs === 'number' ? uploadMs : 'n/a'}ms) send=${Date.now() - sendStart}ms`,
     );
 
     return mediaSent;
@@ -3207,7 +3235,11 @@ export class BaileysStartupService extends ChannelStartupService {
 
         const config: any = { responseType: 'stream' };
 
+        // LOGICFY: how long the source (Chatwoot storage, usually) took to start
+        // answering — separates a slow fetch from a slow ffmpeg in the timing line.
+        const fetchStart = Date.now();
         const response = await axios.get(url, config);
+        this.logger.info(`MEDIA TIMING: audio source responded in ${Date.now() - fetchStart}ms`);
         inputAudioStream = response.data.pipe(new PassThrough());
       } else {
         const audioBuffer = Buffer.from(audio, 'base64');
@@ -3293,14 +3325,24 @@ export class BaileysStartupService extends ChannelStartupService {
     }
 
     if (data?.encoding) {
+      // LOGICFY: per-leg timing, see mediaMessage(). `transcode` covers the fetch of
+      // the source and the ffmpeg conversion (they overlap — the stream is piped);
+      // `send` covers the encrypt + upload + message.
+      const transcodeStart = Date.now();
       const convert = await this.processAudio(mediaData.audio);
+      const transcodeMs = Date.now() - transcodeStart;
 
       if (Buffer.isBuffer(convert)) {
-        const result = this.sendMessageWithTyping<AnyMessageContent>(
+        const sendStart = Date.now();
+        const result = await this.sendMessageWithTyping<AnyMessageContent>(
           data.number,
           { audio: convert, ptt: true, mimetype: 'audio/ogg; codecs=opus' },
           { presence: 'recording', delay: data?.delay },
           isIntegration,
+        );
+        this.logger.info(
+          `MEDIA TIMING: audio to ${data.number} transcode=${transcodeMs}ms ` +
+            `(${convert.length} bytes out) send=${Date.now() - sendStart}ms`,
         );
 
         return result;

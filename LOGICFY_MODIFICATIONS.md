@@ -202,3 +202,22 @@ Two changes, both marked `LOGICFY:` inline: `profilePicture()` passes
 including the REST endpoint; and `createConversation` skips the lookup entirely when
 the chat is LID-only (`isLid && !remoteJidAlt`), since there is nothing to find.
 
+## `whatsapp.baileys.service.ts` — per-leg `MEDIA TIMING` lines (2026-09-04)
+
+The fork already logged the total time of a Chatwoot→WhatsApp media send
+(`CHATWOOT SEND: attachment sent … in Nms`). A 31s video and an 18s audio on staging
+could not be attributed to any leg from that number alone, so the send path now logs
+each leg at INFO, all prefixed `MEDIA TIMING:` and marked `LOGICFY:` inline:
+
+- `mediaMessage()` — `prepare=` (fetch from the source URL + encrypt + thumbnail +
+  upload to WhatsApp's media servers) split into `fetch+encrypt=` and `upload=`, then
+  `send=`. The upload leg is measured by wrapping the `upload` function handed to
+  Baileys' `prepareWAMessageMedia` in `prepareMediaMessage()`; the measured value rides
+  on the generated message as `uploadMs` (a plain extra property, ignored by the send).
+- `audioWhatsapp()` — `transcode=` (source fetch + ffmpeg, overlapping) with the output
+  size, then `send=` (encrypt + upload + message).
+- `processAudio()` — `audio source responded in Nms`: time to first byte from the source
+  (Chatwoot storage, usually), so a slow fetch is distinguishable from a slow ffmpeg.
+
+Behaviour is unchanged; `audioWhatsapp()` now awaits the send it already returned.
+
