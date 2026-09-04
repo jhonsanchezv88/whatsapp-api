@@ -1604,7 +1604,25 @@ export class ChatwootService {
           formatText = textToConcat.join(formattedDelimiter);
         }
 
-        for (const message of body.conversation.messages) {
+        // The webhook describes ONE message (`body`), but `body.conversation.messages`
+        // holds only the conversation's LATEST message at dispatch time — Chatwoot's
+        // Conversations::EventDataPresenter#webhook_push_messages is literally
+        // `[messages.chat.last]`. Chatwoot dispatches a few seconds after creation, so a
+        // second message sent inside that window replaces this one in the array. An
+        // attachment-only send then took the *text* branch with an empty body, threw
+        // "Text is required", and the image never left WhatsApp while the private-note
+        // error appeared in the UI (production conversation 133, 2026-09-04). The same
+        // stale-array trap already had to be patched out of the echo check above.
+        //
+        // `Message#webhook_data` puts this message's own attachments at the top level,
+        // so the triggering message can always be reconstructed from the payload itself.
+        const triggeringMessage = body?.conversation?.messages?.find((m) => m?.id === body.id) ?? {
+          id: body.id,
+          attachments: body.attachments,
+        };
+
+        // A webhook is one message; the loop is kept only so the body below is untouched.
+        for (const message of [triggeringMessage]) {
           if (message.attachments && message.attachments.length > 0) {
             for (const attachment of message.attachments) {
               if (!messageReceived) {
@@ -1645,6 +1663,17 @@ export class ChatwootService {
               );
             }
           } else {
+            if (!formatText || formatText.trim().length === 0) {
+              // Nothing to send and nothing to attach. Sending anyway makes
+              // textMessage() throw "Text is required", which surfaces to the human as
+              // "🚨 The message could not be sent" — an alarming note about a message
+              // that never had any content. Log it and move on instead.
+              this.logger.warn(
+                `CHATWOOT WEBHOOK: outgoing message ${body.id} has neither text nor attachments — nothing to send`,
+              );
+              continue;
+            }
+
             const data: SendTextDto = {
               number: chatId,
               text: formatText,
@@ -1736,6 +1765,10 @@ export class ChatwootService {
       }
 
       if (body.message_type === 'template' && body.event === 'message_created') {
+        if (!body.content || body.content.trim().length === 0) {
+          return { message: 'bot' };
+        }
+
         const data: SendTextDto = {
           number: chatId,
           text: body.content.replace(/\\\r\n|\\\n|\n/g, '\n'),
@@ -1744,7 +1777,37 @@ export class ChatwootService {
 
         sendTelemetry('/message/sendText');
 
-        await waInstance?.textMessage(data);
+        // `true` = isIntegration, and it is not optional. Without it
+        // sendMessageWithTyping() takes the `!isIntegration` branch and pushes the
+        // message it just sent BACK into Chatwoot via eventWhatsapp(SEND_MESSAGE) — so
+        // an account-level auto-resolve farewell (Chatwoot's MessageTemplates::Template::
+        // AutoResolve, message_type "template") appeared twice in the UI: once as the
+        // original bot bubble, once as an outgoing bubble authored by the Evolution bot
+        // user, while WhatsApp correctly received one. Worse, that second bubble carries
+        // a "WAID:" source_id, which is exactly the signature logicfy's webhook uses to
+        // recognise a message typed by a human on the phone — so every farewell also put
+        // the conversation into standby and injected a fake [HUMAN AGENT] turn into the
+        // AI session (production account 370, 2026-09-04). The outgoing branch above has
+        // always passed `true`; this branch never did.
+        const messageSent = await waInstance?.textMessage(data, true);
+
+        // Link the WhatsApp id to the Chatwoot message, as the outgoing branch does, so
+        // a later delete or quoted reply can still resolve this message.
+        if (messageSent) {
+          if (Long.isLong(messageSent?.messageTimestamp)) {
+            messageSent.messageTimestamp = messageSent.messageTimestamp?.toNumber();
+          }
+          await this.updateChatwootMessageId(
+            { ...messageSent },
+            {
+              messageId: body.id,
+              inboxId: body.inbox?.id,
+              conversationId: body.conversation?.id,
+              contactInboxSourceId: body.conversation?.contact_inbox?.source_id,
+            },
+            instance,
+          );
+        }
       }
 
       return { message: 'bot' };

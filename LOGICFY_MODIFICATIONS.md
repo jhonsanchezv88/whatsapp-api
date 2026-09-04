@@ -1,6 +1,6 @@
 # Logicfy modifications to Evolution API
 
-_Last updated: 2026-09-03. Fork of Evolution API v2.3.7 (`jhonsanchezv88/whatsapp-api`)._
+_Last updated: 2026-09-04. Fork of Evolution API v2.3.7 (`jhonsanchezv88/whatsapp-api`)._
 
 This is the authoritative list of every change this fork carries on top of upstream
 Evolution API. **Read it before merging upstream** — these are the sites that will
@@ -148,3 +148,39 @@ native Chatwoot integration was dead for the instance until its next reconnect, 
 every inbound message was invisibly dropped (reached the `Message` table, never
 Chatwoot). Now awaited, with one retry for `loadChatwoot` since it gates all inbound
 delivery. Recovery without a deploy: re-POST `/chatwoot/set` + `/instance/restart`.
+
+## `chatwoot.service.ts` — `receiveWebhook`: the template branch must send as an integration (2026-09-04)
+
+Upstream's `message_type === 'template'` branch calls `waInstance?.textMessage(data)`
+with `isIntegration` left at its default `false`, while the `outgoing` branch a few
+lines above has always passed `true`. Without it `sendMessageWithTyping()` takes its
+`!isIntegration` path and pushes the message it just sent **back into Chatwoot** through
+`eventWhatsapp(SEND_MESSAGE, …)`.
+
+Chatwoot's account-level auto-resolve farewell (`MessageTemplates::Template::AutoResolve`)
+is a `template` message, so every farewell appeared twice in the Chatwoot UI — once as
+the bot bubble, once as an outgoing bubble authored by the Evolution bot user — while
+WhatsApp correctly received one. The duplicate also carries a `WAID:` source_id, which
+is precisely how logicfy recognises a message typed by a human on the phone, so each
+farewell additionally put the conversation into standby and injected a fake
+`[HUMAN AGENT]` turn into the AI session (production account 370). Now passes `true` and
+calls `updateChatwootMessageId()` so deletes and quoted replies still resolve. Marked
+`LOGICFY:`-adjacent by an explanatory comment at the site.
+
+## `chatwoot.service.ts` — `receiveWebhook`: send THIS message's attachments, not the conversation's last (2026-09-04)
+
+Upstream loops `for (const message of body.conversation.messages)`. Chatwoot fills that
+array from `Conversations::EventDataPresenter#webhook_push_messages`, which is literally
+`[messages.chat.last]` — the conversation's newest chat message **at webhook-dispatch
+time**, not the message the webhook describes. Chatwoot dispatches a few seconds after
+creation, so a text sent right after an image takes the slot: the image's webhook then
+found no attachments, fell into the text branch with an empty body, threw
+`BadRequestException('Text is required')`, and the image never left WhatsApp while the
+human saw "🚨 The message could not be sent" (production conversation 133).
+
+The triggering message is now resolved by `body.id`, falling back to the payload's own
+top-level `body.attachments` (`Message#webhook_data` always carries them), and the text
+branch logs a warning and skips instead of throwing when there is genuinely nothing to
+send. Same trap, same file: the outgoing echo check above it had to be patched for this
+array on 2026-09-03. **Treat `body.conversation.messages` as conversation context, never
+as "the messages in this webhook".**
