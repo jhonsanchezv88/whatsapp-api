@@ -1,6 +1,6 @@
 # Logicfy modifications to Evolution API
 
-_Last updated: 2026-09-04. Fork of Evolution API v2.3.7 (`jhonsanchezv88/whatsapp-api`)._
+_Last updated: 2026-09-04 (evening). Fork of Evolution API v2.3.7 (`jhonsanchezv88/whatsapp-api`)._
 
 This is the authoritative list of every change this fork carries on top of upstream
 Evolution API. **Read it before merging upstream** — these are the sites that will
@@ -184,3 +184,21 @@ branch logs a warning and skips instead of throwing when there is genuinely noth
 send. Same trap, same file: the outgoing echo check above it had to be patched for this
 array on 2026-09-03. **Treat `body.conversation.messages` as conversation context, never
 as "the messages in this webhook".**
+
+## `whatsapp.baileys.service.ts` + `chatwoot.service.ts` — the 60-second profile picture (2026-09-04)
+
+`createConversation` calls `waInstance.profilePicture(chatId)` on every cache miss, and
+`profilePicture()` called Baileys' `profilePictureUrl(jid, 'image')` with no timeout —
+Baileys' default is **60s**. For a LID-only customer `chatId` is the LID's digits, so
+the JID is `<lid>@s.whatsapp.net`, which does not exist and never answers. Chatwoot's
+request log for staging conversation 216 shows exactly 60.0s with no traffic from
+Evolution between the cache-miss 404 and the contact creation. Because the
+messages.upsert handler awaits Chatwoot delivery before `sendDataWebhook`, the logicfy
+webhook waited too — the customer's first message took 61s to appear anywhere. Every
+cache miss paid it: first contact, Evolution restart, a deleted conversation.
+
+Two changes, both marked `LOGICFY:` inline: `profilePicture()` passes
+`PROFILE_PICTURE_TIMEOUT_MS` (8s) as Baileys' `timeoutMs`, which bounds every caller
+including the REST endpoint; and `createConversation` skips the lookup entirely when
+the chat is LID-only (`isLid && !remoteJidAlt`), since there is nothing to find.
+

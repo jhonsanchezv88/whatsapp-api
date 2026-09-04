@@ -163,6 +163,9 @@ export interface ExtendedIMessageKey extends proto.IMessageKey {
   isViewOnce?: boolean;
 }
 
+// LOGICFY: see profilePicture(). Generous for a real lookup, short next to Baileys' 60s default.
+const PROFILE_PICTURE_TIMEOUT_MS = 8_000;
+
 const groupMetadataCache = new CacheService(new CacheEngine(configService, 'groups').getEngine());
 
 // Adicione a função getVideoDuration no início do arquivo
@@ -2091,7 +2094,14 @@ export class BaileysStartupService extends ChannelStartupService {
     const jid = createJid(number);
 
     try {
-      const profilePictureUrl = await this.client.profilePictureUrl(jid, 'image');
+      // LOGICFY: bounded. Baileys' default query timeout is 60s, and a JID that does
+      // not exist — every LID-only customer, whose phone JID is fabricated from the
+      // LID digits — simply never answers. createConversation calls this on every
+      // cache miss, and the upsert handler awaits Chatwoot delivery before firing the
+      // webhooks, so a LID-only customer's first message sat 60.0s in this one call
+      // (staging conversation 216, 2026-09-04 21:16Z). A real avatar comes back in
+      // well under a second.
+      const profilePictureUrl = await this.client.profilePictureUrl(jid, 'image', PROFILE_PICTURE_TIMEOUT_MS);
 
       return { wuid: jid, profilePictureUrl };
     } catch {

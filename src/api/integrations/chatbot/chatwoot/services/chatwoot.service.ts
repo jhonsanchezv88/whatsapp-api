@@ -852,7 +852,14 @@ export class ChatwootService {
           }
         }
 
-        const picture_url = await this.waMonitor.waInstances[instance.instanceName].profilePicture(chatId);
+        // LOGICFY: for a LID-only chat `chatId` is the LID's digits, and the phone JID
+        // built from them does not exist — the lookup can only time out (60s by
+        // default in Baileys; now capped in profilePicture()). Skip it: there is no
+        // avatar to find, and the customer's first message is waiting on this line.
+        const isLidOnly = isLid && !isGroup && !body.key.remoteJidAlt;
+        const picture_url = isLidOnly
+          ? { wuid: remoteJid, profilePictureUrl: null }
+          : await this.waMonitor.waInstances[instance.instanceName].profilePicture(chatId);
         this.logger.verbose(`Contact profile picture URL: ${JSON.stringify(picture_url)}`);
 
         this.logger.verbose(`Searching contact for: ${chatId}`);
