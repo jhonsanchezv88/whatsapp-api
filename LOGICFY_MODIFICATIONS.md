@@ -1,6 +1,6 @@
 # Logicfy modifications to Evolution API
 
-_Last updated: 2026-09-04 (evening). Fork of Evolution API v2.3.7 (`jhonsanchezv88/whatsapp-api`)._
+_Last updated: 2026-10-13 (typing presence relayed from Chatwoot typing events). Previously 2026-09-04 (evening). Fork of Evolution API v2.3.7 (`jhonsanchezv88/whatsapp-api`)._
 
 This is the authoritative list of every change this fork carries on top of upstream
 Evolution API. **Read it before merging upstream** — these are the sites that will
@@ -88,6 +88,19 @@ endless `getaddrinfo ENOTFOUND` noise; now rejected up front.
 ### Stringify non-Error objects in the send-error note — `bcf7f6bb`
 `chatwoot.service.ts` — one-liner; error notes posted to Chatwoot showed
 `[object Object]`.
+
+### Relay Chatwoot typing events as a WhatsApp presence — 2026-10-13
+`src/api/integrations/chatbot/chatwoot/services/chatwoot.service.ts` (`receiveWebhook`,
+before the `!body?.conversation || body.private` early return; new private
+`relayTypingPresence`; `createJid` import)
+
+The logicfy Chatwoot fork forwards `conversation_typing_on/off` to this inbox webhook
+(for every agent typing in the dashboard and for logicfy's AI while it generates and
+between bubbles). We send a Baileys `composing` / `paused` presence straight to the
+socket (`client.presenceSubscribe` + `client.sendPresenceUpdate`), **not** through
+`sendPresence()`, which awaits its `delay` and would hold the webhook request open.
+Private-note typing is ignored. Errors are logged, never thrown. Upstream has no
+handler for these events; the early return used to swallow them.
 
 ## 3. Latency & logging
 

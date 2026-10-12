@@ -20,6 +20,7 @@ import ChatwootClient, {
 } from '@figuro/chatwoot-sdk';
 import { request as chatwootRequest } from '@figuro/chatwoot-sdk/dist/core/request';
 import { Chatwoot as ChatwootModel, Contact as ContactModel, Message as MessageModel } from '@prisma/client';
+import { createJid } from '@utils/createJid';
 import i18next from '@utils/i18n';
 import { sendTelemetry } from '@utils/sendTelemetry';
 import axios from 'axios';
@@ -668,20 +669,14 @@ export class ChatwootService {
           }
           return;
         }
-        this.logger.warn(
-          `waitForAttachment: ${res.status} for attachment (attempt ${i + 1}/${delays.length})`,
-        );
+        this.logger.warn(`waitForAttachment: ${res.status} for attachment (attempt ${i + 1}/${delays.length})`);
       } catch (error) {
         this.logger.warn(`waitForAttachment: ${error?.message} (attempt ${i + 1}/${delays.length})`);
       }
     }
   }
 
-  private async createConversationWithRetry(
-    instance: InstanceDto,
-    body: any,
-    attempts = 5,
-  ): Promise<number | null> {
+  private async createConversationWithRetry(instance: InstanceDto, body: any, attempts = 5): Promise<number | null> {
     for (let attempt = 1; attempt <= attempts; attempt++) {
       const conversationId = await this.createConversation(instance, body);
 
@@ -1357,7 +1352,7 @@ export class ChatwootService {
         const audioSendStart = Date.now();
         const messageSent = await waInstance?.audioWhatsapp(data, null, true);
         this.logger.info(
-          `CHATWOOT SEND: audio sent to ${number} in ${Date.now() - audioSendStart}ms (typing_disabled=${this.configService.get<Chatwoot>('CHATWOOT').DISABLE_TYPING})`
+          `CHATWOOT SEND: audio sent to ${number} in ${Date.now() - audioSendStart}ms (typing_disabled=${this.configService.get<Chatwoot>('CHATWOOT').DISABLE_TYPING})`,
         );
 
         return messageSent;
@@ -1386,7 +1381,7 @@ export class ChatwootService {
       const mediaSendStart = Date.now();
       const messageSent = await waInstance?.mediaMessage(data, null, true);
       this.logger.log(
-        `CHATWOOT SEND: media (${type}) sent to ${number} in ${Date.now() - mediaSendStart}ms (typing_disabled=${this.configService.get<Chatwoot>('CHATWOOT').DISABLE_TYPING})`
+        `CHATWOOT SEND: media (${type}) sent to ${number} in ${Date.now() - mediaSendStart}ms (typing_disabled=${this.configService.get<Chatwoot>('CHATWOOT').DISABLE_TYPING})`,
       );
 
       return messageSent;
@@ -1432,6 +1427,34 @@ export class ChatwootService {
     });
   }
 
+  // LOGICFY (2026-10-13): "typing…" on the customer's phone for a Chatwoot typing event.
+  // Private-note typing never reaches the customer. The presence is sent straight to
+  // the Baileys socket (not through sendPresence(), which blocks for `delay` ms): a
+  // `composing` that WhatsApp clears on its own after a few seconds unless refreshed,
+  // which the AI does before every bubble, and a `paused` for typing_off.
+  private async relayTypingPresence(instance: InstanceDto, body: any) {
+    try {
+      if (body.is_private) return;
+      const sender = body.conversation?.meta?.sender;
+      const chatId = sender?.identifier || sender?.phone_number?.replace('+', '');
+      if (!chatId) return;
+
+      const waInstance = this.waMonitor.waInstances[instance.instanceName];
+      const client = waInstance?.client;
+      if (!client?.sendPresenceUpdate) return;
+
+      const jid = createJid(chatId);
+      if (body.event === 'conversation_typing_on') {
+        await client.presenceSubscribe(jid);
+        await client.sendPresenceUpdate('composing', jid);
+      } else {
+        await client.sendPresenceUpdate('paused', jid);
+      }
+    } catch (error) {
+      this.logger.warn(`CHATWOOT WEBHOOK: typing presence failed: ${error?.message || error}`);
+    }
+  }
+
   public async receiveWebhook(instance: InstanceDto, body: any) {
     const webhookStart = Date.now();
     const chatwootCreatedAt = body.created_at
@@ -1456,6 +1479,16 @@ export class ChatwootService {
       ) {
         const keyToDelete = `${instance.instanceName}:createConversation-${body.meta.sender.identifier}`;
         this.cache.delete(keyToDelete);
+      }
+
+      // LOGICFY (2026-10-13): typing indicators. Chatwoot dispatches
+      // conversation_typing_on/off for every agent typing in the dashboard and for
+      // logicfy's AI (toggle_typing_status while it generates and between bubbles).
+      // The fork's WebhookListener now forwards them to this inbox webhook; relay them
+      // as a WhatsApp presence so the customer sees "typing…" on their phone.
+      if (body.event === 'conversation_typing_on' || body.event === 'conversation_typing_off') {
+        await this.relayTypingPresence(instance, body);
+        return { message: 'presence' };
       }
 
       if (
@@ -1583,8 +1616,7 @@ export class ChatwootService {
         // message creation, so a customer message landing in that window put its
         // own WAID source_id in messages[0] and this branch silently dropped a
         // genuine agent/AI send (production 2026-09-03, conversation 67).
-        const ownSourceId =
-          body.source_id ?? body?.conversation?.messages?.find((m) => m?.id === body.id)?.source_id;
+        const ownSourceId = body.source_id ?? body?.conversation?.messages?.find((m) => m?.id === body.id)?.source_id;
         if (ownSourceId?.substring(0, 5) === 'WAID:') {
           return { message: 'bot' };
         }
@@ -1595,7 +1627,7 @@ export class ChatwootService {
         }
 
         this.logger.info(
-          `CHATWOOT WEBHOOK: outgoing message received for ${chatId} (msg=${body.id}, inbox=${body.inbox?.id}, conversation=${body.conversation?.id}), elapsed_since_webhook=${Date.now() - webhookStart}ms, webhook_latency_ms=${webhookLatencyMs ?? 'unknown'}`
+          `CHATWOOT WEBHOOK: outgoing message received for ${chatId} (msg=${body.id}, inbox=${body.inbox?.id}, conversation=${body.conversation?.id}), elapsed_since_webhook=${Date.now() - webhookStart}ms, webhook_latency_ms=${webhookLatencyMs ?? 'unknown'}`,
         );
 
         let formatText: string;
@@ -1650,7 +1682,7 @@ export class ChatwootService {
                 options,
               );
               this.logger.info(
-                `CHATWOOT SEND: attachment sent to ${chatId} in ${Date.now() - attachmentSendStart}ms (msg=${body.id})`
+                `CHATWOOT SEND: attachment sent to ${chatId} in ${Date.now() - attachmentSendStart}ms (msg=${body.id})`,
               );
               if (!messageSent && body.conversation?.id) {
                 this.onSendMessageError(instance, body.conversation?.id);
@@ -1695,7 +1727,7 @@ export class ChatwootService {
               const textSendStart = Date.now();
               messageSent = await waInstance?.textMessage(data, true);
               this.logger.info(
-                `CHATWOOT SEND: text sent to ${chatId} in ${Date.now() - textSendStart}ms (msg=${body.id}, delay=${data.delay ?? 0}, typing_disabled=${this.configService.get<Chatwoot>('CHATWOOT').DISABLE_TYPING})`
+                `CHATWOOT SEND: text sent to ${chatId} in ${Date.now() - textSendStart}ms (msg=${body.id}, delay=${data.delay ?? 0}, typing_disabled=${this.configService.get<Chatwoot>('CHATWOOT').DISABLE_TYPING})`,
               );
               if (!messageSent) {
                 throw new Error('Message not sent');
