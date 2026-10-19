@@ -186,7 +186,10 @@ export class ChatwootService {
       accountId: this.provider.accountId,
     });
 
-    const checkDuplicate = findInbox.payload.map((inbox) => inbox.name).includes(inboxName);
+    // LOGICFY: only a Channel::Api inbox can be "ours". A website widget, Cloud API or
+    // Instagram inbox that happens to carry the same name must not stop us from creating
+    // the API inbox — and must never be adopted below.
+    const checkDuplicate = findInbox.payload.some((inbox) => inbox.name === inboxName && this.isApiInbox(inbox));
 
     let inboxId: number;
 
@@ -212,7 +215,7 @@ export class ChatwootService {
 
       inboxId = inbox.id;
     } else {
-      const inbox = findInbox.payload.find((inbox) => inbox.name === inboxName);
+      const inbox = findInbox.payload.find((inbox) => inbox.name === inboxName && this.isApiInbox(inbox));
 
       if (!inbox) {
         this.logger.warn('inbox not found');
@@ -765,6 +768,21 @@ export class ChatwootService {
           this.logger.error(`Error getting conversation: ${error}`);
           conversationExists = false;
         }
+        // LOGICFY: the cached id may point at a conversation in the WRONG inbox — created
+        // while getInbox() had matched a same-named non-API inbox (production account 370,
+        // 2026-10-19: a website widget inbox named like the instance swallowed two WhatsApp
+        // conversations, and every incoming message into them was refused with 422). Drop
+        // it so the next message is filed in the inbox this instance really owns.
+        if (conversationExists) {
+          const ownInbox = await this.getInbox(instance);
+          if (ownInbox && conversationExists.inbox_id && conversationExists.inbox_id !== ownInbox.id) {
+            this.logger.warn(
+              `Cached conversation ${conversationId} for ${remoteJid} is in inbox ${conversationExists.inbox_id}, ` +
+                `not in this instance's inbox ${ownInbox.id} ("${ownInbox.name}"); forgetting it`,
+            );
+            conversationExists = false;
+          }
+        }
         if (!conversationExists) {
           this.logger.verbose('Conversation does not exist, re-calling createConversation');
           this.cache.delete(cacheKey);
@@ -999,10 +1017,27 @@ export class ChatwootService {
     }
   }
 
+  // LOGICFY: Evolution can only deliver into a `Channel::Api` inbox. Chatwoot refuses an
+  // API-created incoming message anywhere else (`Messages::MessageBuilder#message_type`:
+  // "Incoming messages are only allowed in Api inboxes", HTTP 422), so binding to any
+  // other channel type silently loses every customer message.
+  private isApiInbox(candidate: inbox | null | undefined): boolean {
+    return candidate?.channel_type === 'Channel::Api';
+  }
+
   public async getInbox(instance: InstanceDto): Promise<inbox | null> {
     const cacheKey = `${instance.instanceName}:getInbox`;
     if (await this.cache.has(cacheKey)) {
-      return (await this.cache.get(cacheKey)) as inbox;
+      const cached = (await this.cache.get(cacheKey)) as inbox;
+      if (this.isApiInbox(cached)) {
+        return cached;
+      }
+      // Resolved by name alone before this check existed (or cached without a
+      // channel_type by an older build): forget it and look again.
+      this.logger.warn(
+        `Cached inbox ${cached?.id} ("${cached?.name}", ${cached?.channel_type ?? 'unknown channel'}) is not an API inbox; re-resolving`,
+      );
+      await this.cache.delete(cacheKey);
     }
 
     const client = await this.clientCw(instance);
@@ -1021,10 +1056,24 @@ export class ChatwootService {
       return null;
     }
 
-    const findByName = inbox.payload.find((inbox) => inbox.name === this.getClientCwConfig().nameInbox);
+    // Inbox names are neither unique nor stable in Chatwoot: a user can rename ours and
+    // can create a website widget with the exact name this instance was given. Match on
+    // the name AND the channel type, never the name alone (production account 370,
+    // 2026-10-19: a `Channel::WebWidget` inbox named "logicfy" swallowed the instance).
+    const nameInbox = this.getClientCwConfig().nameInbox;
+    const sameName: inbox[] = inbox.payload.filter((candidate) => candidate.name === nameInbox);
+    const findByName = sameName.find((candidate) => this.isApiInbox(candidate));
 
     if (!findByName) {
-      this.logger.warn('inbox not found');
+      if (sameName.length) {
+        this.logger.warn(
+          `Inbox "${nameInbox}" exists in account ${this.provider.accountId} only as ` +
+            sameName.map((candidate) => `${candidate.id} (${candidate.channel_type})`).join(', ') +
+            '; Evolution needs a Channel::Api inbox with that name',
+        );
+      } else {
+        this.logger.warn('inbox not found');
+      }
       return null;
     }
 

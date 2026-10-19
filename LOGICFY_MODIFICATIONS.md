@@ -1,6 +1,6 @@
 # Logicfy modifications to Evolution API
 
-_Last updated: 2026-10-13 (typing presence relayed from Chatwoot typing events). Previously 2026-09-04 (evening). Fork of Evolution API v2.3.7 (`jhonsanchezv88/whatsapp-api`)._
+_Last updated: 2026-10-19 (inbox resolved by name AND `Channel::Api`; wrong-inbox cache entries self-heal). Previously 2026-10-13 (typing presence relayed from Chatwoot typing events), 2026-09-04 (evening). Fork of Evolution API v2.3.7 (`jhonsanchezv88/whatsapp-api`)._
 
 This is the authoritative list of every change this fork carries on top of upstream
 Evolution API. **Read it before merging upstream** — these are the sites that will
@@ -88,6 +88,29 @@ endless `getaddrinfo ENOTFOUND` noise; now rejected up front.
 ### Stringify non-Error objects in the send-error note — `bcf7f6bb`
 `chatwoot.service.ts` — one-liner; error notes posted to Chatwoot showed
 `[object Object]`.
+
+### Resolve the inbox by name AND channel type; forget wrong-inbox cache entries — 2026-10-19
+`src/api/integrations/chatbot/chatwoot/services/chatwoot.service.ts` (`getInbox`,
+`createConversation`, `initInstanceChatwoot`; new private `isApiInbox`)
+
+Upstream `getInbox()` takes the first inbox whose `name === nameInbox`, whatever its
+channel, and caches it per instance. Chatwoot inbox names are neither unique nor stable:
+in production account 370 a `Channel::WebWidget` inbox named "logicfy" — the instance's
+own `nameInbox` — was matched on a cache miss (2026-10-19 01:13Z) and every new WhatsApp
+conversation was created in the widget, where Chatwoot refuses API-created incoming
+messages ("Incoming messages are only allowed in Api inboxes", HTTP 422). Customer
+messages were lost silently; the owner's `fromMe` replies went through, so the
+conversations looked half alive.
+
+Now: only a `Channel::Api` inbox with the name counts (`isApiInbox`); same-named inboxes
+of other channels are listed in a warning. A cached inbox that is not an API inbox is
+discarded and re-resolved (so the fix lands without flushing Redis). In
+`createConversation`, a cached conversation whose `inbox_id` differs from the instance's
+inbox is forgotten, so the next message is filed correctly — this is what repairs the
+affected contacts after deploy. `initInstanceChatwoot` applies the same filter when
+deciding whether the inbox already exists. Django side (same day): rename sync and an
+API-only inbox-id lookup — `docs_for_ai_context/chatwoot_message_processing.md` →
+"2026-10-19" in the logicfy repo.
 
 ### Relay Chatwoot typing events as a WhatsApp presence — 2026-10-13
 `src/api/integrations/chatbot/chatwoot/services/chatwoot.service.ts` (`receiveWebhook`,
