@@ -1025,6 +1025,45 @@ export class ChatwootService {
     return candidate?.channel_type === 'Channel::Api';
   }
 
+  // LOGICFY: the API channel's `webhook_url` is the one durable link between an inbox
+  // and this instance. Chatwoot posts the inbox's outgoing messages to
+  // `<evolution>/chatwoot/webhook/<instanceName>`, and logicfy re-points it on every
+  // (re)connect. Names are not durable: the owner of production account 370 renamed
+  // the inbox to "logicfy WP Business" while `nameInbox` stayed "logicfy", and once
+  // nothing carried the old name every incoming message was dropped after five
+  // retries (2026-10-22). Hosts are ignored on purpose — the URL may use the public or
+  // the private (`*.railway.internal`) address.
+  private inboxTargetsInstance(candidate: inbox | null | undefined, instanceName: string): boolean {
+    const url = (candidate as any)?.webhook_url;
+    if (typeof url !== 'string' || !url) return false;
+    const match = url.match(/\/chatwoot\/webhook\/([^/?#]+)\/?(?:[?#].*)?$/);
+    if (!match) return false;
+    try {
+      return decodeURIComponent(match[1]) === instanceName;
+    } catch {
+      return match[1] === instanceName;
+    }
+  }
+
+  // Record the inbox's current name as `nameInbox` so the config stops lying: labels
+  // (`addLabelToContact`) and the name fallback below read it, and logicfy's repair
+  // command compares against it.
+  private async adoptInboxName(instance: InstanceDto, name: string) {
+    try {
+      const waInstance = this.waMonitor.waInstances[instance.instanceName];
+      if (!waInstance?.instanceId) return;
+      await this.prismaRepository.chatwoot.update({
+        where: { instanceId: waInstance.instanceId },
+        data: { nameInbox: name },
+      });
+      if (waInstance.localChatwoot) waInstance.localChatwoot.nameInbox = name;
+      if (this.provider) this.provider.nameInbox = name;
+      this.logger.log(`nameInbox for ${instance.instanceName} is now "${name}"`);
+    } catch (error) {
+      this.logger.error(`Could not record the inbox name "${name}" for ${instance.instanceName}: ${error}`);
+    }
+  }
+
   public async getInbox(instance: InstanceDto): Promise<inbox | null> {
     const cacheKey = `${instance.instanceName}:getInbox`;
     if (await this.cache.has(cacheKey)) {
@@ -1061,8 +1100,31 @@ export class ChatwootService {
     // the name AND the channel type, never the name alone (production account 370,
     // 2026-10-19: a `Channel::WebWidget` inbox named "logicfy" swallowed the instance).
     const nameInbox = this.getClientCwConfig().nameInbox;
+    const apiInboxes: inbox[] = inbox.payload.filter((candidate) => this.isApiInbox(candidate));
     const sameName: inbox[] = inbox.payload.filter((candidate) => candidate.name === nameInbox);
-    const findByName = sameName.find((candidate) => this.isApiInbox(candidate));
+
+    // 1. The inbox whose webhook points at this instance — survives renames.
+    const wired = apiInboxes.filter((candidate) => this.inboxTargetsInstance(candidate, instance.instanceName));
+    let findByName: inbox | undefined;
+    if (wired.length === 1) {
+      findByName = wired[0];
+      if (findByName.name !== nameInbox) {
+        this.logger.warn(
+          `Inbox ${findByName.id} is wired to ${instance.instanceName} but is named "${findByName.name}" ` +
+            `while nameInbox is "${nameInbox}"; adopting the current name`,
+        );
+        await this.adoptInboxName(instance, findByName.name);
+      }
+    } else {
+      if (wired.length > 1) {
+        this.logger.warn(
+          `${wired.length} API inboxes point their webhook at ${instance.instanceName} ` +
+            `(${wired.map((candidate) => candidate.id).join(', ')}); falling back to the name "${nameInbox}"`,
+        );
+      }
+      // 2. The name, among API inboxes only.
+      findByName = apiInboxes.find((candidate) => candidate.name === nameInbox);
+    }
 
     if (!findByName) {
       if (sameName.length) {

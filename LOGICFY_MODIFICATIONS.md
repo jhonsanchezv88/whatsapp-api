@@ -1,6 +1,6 @@
 # Logicfy modifications to Evolution API
 
-_Last updated: 2026-10-19 (inbox resolved by name AND `Channel::Api`; wrong-inbox cache entries self-heal). Previously 2026-10-13 (typing presence relayed from Chatwoot typing events), 2026-09-04 (evening). Fork of Evolution API v2.3.7 (`jhonsanchezv88/whatsapp-api`)._
+_Last updated: 2026-10-22 (inbox resolved by its webhook URL first, stale `nameInbox` corrected in place; 2026-10-19: name AND `Channel::Api`, wrong-inbox cache entries self-heal). Previously 2026-10-13 (typing presence relayed from Chatwoot typing events), 2026-09-04 (evening). Fork of Evolution API v2.3.7 (`jhonsanchezv88/whatsapp-api`)._
 
 This is the authoritative list of every change this fork carries on top of upstream
 Evolution API. **Read it before merging upstream** — these are the sites that will
@@ -111,6 +111,19 @@ affected contacts after deploy. `initInstanceChatwoot` applies the same filter w
 deciding whether the inbox already exists. Django side (same day): rename sync and an
 API-only inbox-id lookup — `docs_for_ai_context/chatwoot_message_processing.md` →
 "2026-10-19" in the logicfy repo.
+
+**2026-10-22 follow-up — resolve by webhook URL, not by name.** The 10-19 build took
+the widget away but could not help an instance whose `nameInbox` was already stale:
+account 370's API inbox had been renamed "logicfy WP Business" long before, the widget
+was then renamed too, nothing carried "logicfy" any more, and every incoming message
+was dropped after `createConversationWithRetry`'s five attempts (Chatwoot log:
+contacts/filter + inboxes list at 1-2-4-8 s). `getInbox()` now first takes the single
+`Channel::Api` inbox whose `webhook_url` ends in `/chatwoot/webhook/<instanceName>`
+(`inboxTargetsInstance`; host ignored, public or `*.railway.internal`), and when its
+name differs from `nameInbox` writes the current name back to the `Chatwoot` row,
+`localChatwoot` and `provider` (`adoptInboxName`). The name match among API inboxes
+is the fallback (no wired inbox, or more than one). Logicfy keeps that webhook URL
+pointed at the current instance on every (re)connect (`_update_chatwoot_inbox_webhook_url`).
 
 ### Relay Chatwoot typing events as a WhatsApp presence — 2026-10-13
 `src/api/integrations/chatbot/chatwoot/services/chatwoot.service.ts` (`receiveWebhook`,
