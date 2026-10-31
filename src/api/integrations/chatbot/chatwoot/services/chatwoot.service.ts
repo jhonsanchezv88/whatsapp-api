@@ -1180,6 +1180,7 @@ export class ChatwootService {
         source_id: sourceId,
         content_attributes: {
           ...replyToIds,
+          ...this.getAdReferral(messageBody),
         },
         source_reply_id: sourceReplyId ? sourceReplyId.toString() : null,
       },
@@ -1307,10 +1308,12 @@ export class ChatwootService {
 
     if (messageBody && instance) {
       const replyToIds = await this.getReplyToIds(messageBody, instance);
+      const adReferral = this.getAdReferral(messageBody);
 
-      if (replyToIds.in_reply_to || replyToIds.in_reply_to_external_id) {
+      if (replyToIds.in_reply_to || replyToIds.in_reply_to_external_id || adReferral.referral) {
         const content = JSON.stringify({
           ...replyToIds,
+          ...adReferral,
         });
         data.append('content_attributes', content);
       }
@@ -2081,6 +2084,36 @@ export class ChatwootService {
 
   private isInteractiveButtonMessage(messageType: string, message: any) {
     return messageType === 'interactiveMessage' && message.interactiveMessage?.nativeFlowMessage?.buttons?.length > 0;
+  }
+
+  // LOGICFY: the click-to-WhatsApp ad context of an incoming message, shaped like the Cloud API
+  // `referral` object so the logicfy backend reads one format for every WhatsApp provider.
+  // Only explicit fields: `thumbnail` and `ctwaPayload` are bytes and do not belong in Chatwoot.
+  private getAdReferral(messageBody: any): { referral?: Record<string, unknown> } {
+    if (!messageBody || messageBody.key?.fromMe) return {};
+
+    const contextInfo = messageBody.contextInfo || messageBody.message?.extendedTextMessage?.contextInfo;
+    const ad = contextInfo?.externalAdReply;
+    // A link preview can carry externalAdReply too; an ad has an ad id or a click id.
+    if (!ad || !(ad.ctwaClid || ad.sourceId || contextInfo?.conversionSource)) return {};
+
+    const referral = {
+      source_url: ad.sourceUrl,
+      source_id: ad.sourceId,
+      source_type: ad.sourceType,
+      headline: ad.title,
+      body: ad.body,
+      thumbnail_url: ad.thumbnailUrl,
+      ctwa_clid: ad.ctwaClid,
+      conversion_source: contextInfo?.conversionSource,
+      entry_point_conversion_source: contextInfo?.entryPointConversionSource,
+      provider: 'evolution',
+    };
+    return {
+      referral: Object.fromEntries(
+        Object.entries(referral).filter(([, value]) => value !== undefined && value !== null && value !== ''),
+      ),
+    };
   }
 
   private getAdsMessage(msg: any) {
