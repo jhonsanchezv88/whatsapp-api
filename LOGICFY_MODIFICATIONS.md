@@ -1,6 +1,6 @@
 # Logicfy modifications to Evolution API
 
-_Last updated: 2026-11-06 (libsignal key dumps and decrypt stack traces filtered out of the logs; whole-message logs reduced to a summary). Previously 2026-10-22 (inbox resolved by its webhook URL first, stale `nameInbox` corrected in place; 2026-10-19: name AND `Channel::Api`, wrong-inbox cache entries self-heal). Previously 2026-10-13 (typing presence relayed from Chatwoot typing events), 2026-09-04 (evening). Fork of Evolution API v2.3.7 (`jhonsanchezv88/whatsapp-api`)._
+_Last updated: 2026-11-06 (ack `<status>` stanzas and ignore `@bot` senders to end the 50-minute disconnect loop; libsignal key dumps and decrypt stack traces filtered out of the logs; whole-message logs reduced to a summary). Previously 2026-10-22 (inbox resolved by its webhook URL first, stale `nameInbox` corrected in place; 2026-10-19: name AND `Channel::Api`, wrong-inbox cache entries self-heal). Previously 2026-10-13 (typing presence relayed from Chatwoot typing events), 2026-09-04 (evening). Fork of Evolution API v2.3.7 (`jhonsanchezv88/whatsapp-api`)._
 
 This is the authoritative list of every change this fork carries on top of upstream
 Evolution API. **Read it before merging upstream** — these are the sites that will
@@ -167,6 +167,29 @@ longer appear in the logs by those words: search for `[libsignal] decrypt failur
 `messageLogSummary()` replaces the five sites that logged a whole message, which printed
 customer text, `messageSecret` and `mediaKey`. A summary keeps id, JIDs, fromMe, category,
 type, timestamp, stub reason and retry count, so a message can still be followed by id.
+
+### Stop the 50-minute disconnect loop — 2026-11-06
+`src/utils/baileysStanzaFixes.ts` (new), `whatsapp.baileys.service.ts` (`shouldIgnoreJid`,
+just after `eventHandler()`). Test: `npx tsx test/baileysStanzaFixes.test.ts` (real Baileys
+socket, with controls that show both bugs without the fix).
+
+WhatsApp waits 50 minutes for an ack, ends the stream naming the stanza
+(`<stream:error><ack class=… type=… id=…/>`), and redelivers it on reconnect. Two stanzas
+in Baileys 7.0.0-rc.9 never get that ack:
+
+- **`<status>`**: contacts' statuses, now sent to some accounts as a top-level stanza with
+  no handler in Baileys. `ackStatusStanzas()` sends a plain ack. A NACK would leave it
+  pending. Upstream: WhiskeySockets/Baileys#2858, open PRs #2866 and #2883.
+- **Messages from a Meta AI `@bot` JID**: `decodeMessageNode` throws `Unknown message type`
+  before any ack. In the offline queue the throw also leaves `isProcessing` true, so no
+  later offline node runs on that connection. `isUnsupportedSender()` makes
+  `shouldIgnoreJid` answer them first, with the same NACK 500 that ignored group messages
+  get, which causes no stream errors in production today.
+
+**On upgrading Baileys:** if the new version handles `CB:status`, delete `ackStatusStanzas`
+or each status is acked twice. Keep the `@bot` rule until `decodeMessageNode` accepts them.
+We ack directly rather than through Baileys' offline queue, because that queue is internal
+and routing through it would mean patching `node_modules`.
 
 ## 4. Configuration
 

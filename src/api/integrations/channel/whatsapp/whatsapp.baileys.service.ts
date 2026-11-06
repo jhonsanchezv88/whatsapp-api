@@ -80,6 +80,7 @@ import ffmpegPath from '@ffmpeg-installer/ffmpeg';
 import { Boom } from '@hapi/boom';
 import { createId as cuid } from '@paralleldrive/cuid2';
 import { Instance, Message } from '@prisma/client';
+import { ackStatusStanzas, isUnsupportedSender } from '@utils/baileysStanzaFixes';
 import { createJid } from '@utils/createJid';
 import { fetchLatestWaWebVersion } from '@utils/fetchLatestWaWebVersion';
 import { messageLogSummary } from '@utils/logRedaction';
@@ -670,7 +671,7 @@ export class BaileysStartupService extends ChannelStartupService {
         const isBroadcast = !this.localSettings.readStatus && isJidBroadcast(jid);
         const isNewsletter = isJidNewsletter(jid);
 
-        return isGroupJid || isBroadcast || isNewsletter;
+        return isGroupJid || isBroadcast || isNewsletter || isUnsupportedSender(jid);
       },
       syncFullHistory: this.localSettings.syncFullHistory,
       shouldSyncHistoryMessage: (msg: proto.Message.IHistorySyncNotification) => {
@@ -707,6 +708,8 @@ export class BaileysStartupService extends ChannelStartupService {
     }
 
     this.eventHandler();
+
+    ackStatusStanzas(this.client, (error) => this.logger.error(`Failed to ack status stanza: ${error}`));
 
     this.client.ws.on('CB:call', (packet) => {
       console.log('CB:call', packet);
