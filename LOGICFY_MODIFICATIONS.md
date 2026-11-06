@@ -1,6 +1,6 @@
 # Logicfy modifications to Evolution API
 
-_Last updated: 2026-10-22 (inbox resolved by its webhook URL first, stale `nameInbox` corrected in place; 2026-10-19: name AND `Channel::Api`, wrong-inbox cache entries self-heal). Previously 2026-10-13 (typing presence relayed from Chatwoot typing events), 2026-09-04 (evening). Fork of Evolution API v2.3.7 (`jhonsanchezv88/whatsapp-api`)._
+_Last updated: 2026-11-06 (libsignal key dumps and decrypt stack traces filtered out of the logs; whole-message logs reduced to a summary). Previously 2026-10-22 (inbox resolved by its webhook URL first, stale `nameInbox` corrected in place; 2026-10-19: name AND `Channel::Api`, wrong-inbox cache entries self-heal). Previously 2026-10-13 (typing presence relayed from Chatwoot typing events), 2026-09-04 (evening). Fork of Evolution API v2.3.7 (`jhonsanchezv88/whatsapp-api`)._
 
 This is the authoritative list of every change this fork carries on top of upstream
 Evolution API. **Read it before merging upstream** — these are the sites that will
@@ -146,6 +146,27 @@ handler for these events; the early return used to swallow them.
 ### Timing logs for Chatwoot→WhatsApp delivery — `594a6bab`, `c4f8022f`
 `whatsapp.baileys.service.ts`, `chatwoot.service.ts` — `logger.info`-level timing
 around the outbound path, added while hunting a delivery delay.
+
+### Keep Signal keys and message bodies out of the logs — 2026-11-06
+`src/utils/logRedaction.ts` (new), `src/main.ts`, `whatsapp.baileys.service.ts`,
+`chatwoot.service.ts`. Test: `npx tsx test/logRedaction.test.ts` (drives the real libsignal).
+
+libsignal logs straight to `console` with no level to configure. `Closing session:` and
+its siblings print the whole SessionEntry, `privKey` included, on routine re-keying on
+every instance. An undecryptable message prints one stack trace per session tried (about
+100 lines per message on User386, up to 40 sessions per record), which hit Railway's 500
+logs/sec limit and dropped other instances' lines.
+
+`installLibsignalLogFilter()` patches `console.info/warn/error` by exact prefix: session
+dumps are dropped, and decrypt failures become one line a minute at most,
+`[libsignal] decrypt failures: N messages; session attempts by address: <addr>=<n>`. We
+patch `console` rather than libsignal so the fix survives `npm ci` and Baileys upgrades;
+if libsignal rewords these lines the test fails. **Bad MAC and `No matching sessions` no
+longer appear in the logs by those words: search for `[libsignal] decrypt failures`.**
+
+`messageLogSummary()` replaces the five sites that logged a whole message, which printed
+customer text, `messageSecret` and `mediaKey`. A summary keeps id, JIDs, fromMe, category,
+type, timestamp, stub reason and retry count, so a message can still be followed by id.
 
 ## 4. Configuration
 

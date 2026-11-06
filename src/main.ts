@@ -19,6 +19,7 @@ import { onUnexpectedError } from '@config/error.config';
 import { Logger } from '@config/logger.config';
 import { ROOT_DIR } from '@config/path.config';
 import * as Sentry from '@sentry/node';
+import { installLibsignalLogFilter } from '@utils/logRedaction';
 import { ServerUP } from '@utils/server-up';
 import axios from 'axios';
 import compression from 'compression';
@@ -166,4 +167,5 @@ async function bootstrap() {
   onUnexpectedError();
 }
 
+installLibsignalLogFilter();
 bootstrap();

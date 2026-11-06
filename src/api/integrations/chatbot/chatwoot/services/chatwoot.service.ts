@@ -22,6 +22,7 @@ import { request as chatwootRequest } from '@figuro/chatwoot-sdk/dist/core/reque
 import { Chatwoot as ChatwootModel, Contact as ContactModel, Message as MessageModel } from '@prisma/client';
 import { createJid } from '@utils/createJid';
 import i18next from '@utils/i18n';
+import { messageLogSummary } from '@utils/logRedaction';
 import { sendTelemetry } from '@utils/sendTelemetry';
 import axios from 'axios';
 import { WAMessageContent, WAMessageKey } from 'baileys';
@@ -2389,7 +2390,7 @@ export class ChatwootService {
       }
 
       if (event === 'messages.upsert' || event === 'send.message') {
-        this.logger.info(`[${event}] New message received - Instance: ${JSON.stringify(body, null, 2)}`);
+        this.logger.info(`[${event}] New message received - Instance: ${messageLogSummary(body)}`);
         if (body.key.remoteJid === 'status@broadcast') {
           return;
         }

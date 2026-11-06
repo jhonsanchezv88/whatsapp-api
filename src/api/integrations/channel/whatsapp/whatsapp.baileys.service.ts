@@ -82,6 +82,7 @@ import { createId as cuid } from '@paralleldrive/cuid2';
 import { Instance, Message } from '@prisma/client';
 import { createJid } from '@utils/createJid';
 import { fetchLatestWaWebVersion } from '@utils/fetchLatestWaWebVersion';
+import { messageLogSummary } from '@utils/logRedaction';
 import { makeProxyAgent, makeProxyAgentUndici } from '@utils/makeProxyAgent';
 import { getOnWhatsappCache, saveOnWhatsappCache } from '@utils/onWhatsappCache';
 import { status } from '@utils/renderStatus';
@@ -1117,7 +1118,7 @@ export class BaileysStartupService extends ChannelStartupService {
               ].some((err) => param?.includes?.(err)),
             )
           ) {
-            this.logger.warn(`Message ignored with messageStubParameters: ${JSON.stringify(received, null, 2)}`);
+            this.logger.warn(`Message ignored with messageStubParameters: ${messageLogSummary(received)}`);
             continue;
           }
           if (received.message?.conversation || received.message?.extendedTextMessage?.text) {
@@ -1128,7 +1129,7 @@ export class BaileysStartupService extends ChannelStartupService {
 
               console.log('requested placeholder resync, id=', messageId);
             } else if (requestId) {
-              console.log('Message received from phone, id=', requestId, received);
+              console.log('Message received from phone, id=', requestId, messageLogSummary(received));
             }
 
             if (text == 'onDemandHistSync') {
@@ -1495,7 +1496,7 @@ export class BaileysStartupService extends ChannelStartupService {
             }
           }
 
-          this.logger.verbose(messageRaw);
+          this.logger.verbose(messageLogSummary(messageRaw));
 
           sendTelemetry(`received.message.${messageRaw.messageType ?? 'unknown'}`);
           // LOGICFY: a LID-addressed message often arrives with no remoteJidAlt even
@@ -1526,7 +1527,7 @@ export class BaileysStartupService extends ChannelStartupService {
             messageRaw.key.remoteJidLid = messageRaw.key.remoteJid;
             messageRaw.key.remoteJid = messageRaw.key.remoteJidAlt;
           }
-          console.log(messageRaw);
+          console.log(messageLogSummary(messageRaw));
 
           this.sendDataWebhook(Events.MESSAGES_UPSERT, messageRaw);
 
