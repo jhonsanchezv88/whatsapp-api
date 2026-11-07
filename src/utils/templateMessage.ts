@@ -3,9 +3,6 @@
 // the template is flattened into one of those and the existing send path takes it from there.
 // Shapes seen on a real line (2026-11-07): see docs_for_ai_context/evolution_api_integration.md in logicfy.
 
-/** content_attributes key that tells Django this came from another business, so the AI stays silent. */
-export const BUSINESS_TEMPLATE_FLAG = 'logicfy_business_template';
-
 const MEDIA_TYPES = ['imageMessage', 'videoMessage', 'documentMessage'];
 
 type Format = (text: string) => string;

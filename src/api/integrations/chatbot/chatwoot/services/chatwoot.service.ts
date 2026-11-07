@@ -24,7 +24,7 @@ import { createJid } from '@utils/createJid';
 import i18next from '@utils/i18n';
 import { messageLogSummary } from '@utils/logRedaction';
 import { sendTelemetry } from '@utils/sendTelemetry';
-import { BUSINESS_TEMPLATE_FLAG, flattenTemplateMessage } from '@utils/templateMessage';
+import { flattenTemplateMessage } from '@utils/templateMessage';
 import axios from 'axios';
 import { WAMessageContent, WAMessageKey } from 'baileys';
 import dayjs from 'dayjs';
@@ -1183,7 +1183,6 @@ export class ChatwootService {
         content_attributes: {
           ...replyToIds,
           ...this.getAdReferral(messageBody),
-          ...this.getBusinessTemplateFlag(messageBody),
         },
         source_reply_id: sourceReplyId ? sourceReplyId.toString() : null,
       },
@@ -1312,18 +1311,11 @@ export class ChatwootService {
     if (messageBody && instance) {
       const replyToIds = await this.getReplyToIds(messageBody, instance);
       const adReferral = this.getAdReferral(messageBody);
-      const businessTemplate = this.getBusinessTemplateFlag(messageBody);
 
-      if (
-        replyToIds.in_reply_to ||
-        replyToIds.in_reply_to_external_id ||
-        adReferral.referral ||
-        Object.keys(businessTemplate).length > 0
-      ) {
+      if (replyToIds.in_reply_to || replyToIds.in_reply_to_external_id || adReferral.referral) {
         const content = JSON.stringify({
           ...replyToIds,
           ...adReferral,
-          ...businessTemplate,
         });
         data.append('content_attributes', content);
       }
@@ -2092,10 +2084,6 @@ export class ChatwootService {
     return result;
   }
 
-  private getBusinessTemplateFlag(messageBody: any) {
-    return messageBody?.logicfyBusinessTemplate ? { [BUSINESS_TEMPLATE_FLAG]: true } : {};
-  }
-
   private whatsappToChatwootMarkdown(text: string) {
     return text
       .replace(/\*((?!\s)([^\n*]+?)(?<!\s))\*/g, '**$1**')
@@ -2431,7 +2419,6 @@ export class ChatwootService {
             ...flattenTemplateMessage(body.message.templateMessage, i18next.t('cw.templateMessage.noText'), (text) =>
               this.whatsappToChatwootMarkdown(text),
             ),
-            logicfyBusinessTemplate: !body.key.fromMe,
           };
         }
 
