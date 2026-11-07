@@ -75,6 +75,7 @@ import {
   QrCode,
   S3,
 } from '@config/env.config';
+import { Logger } from '@config/logger.config';
 import { BadRequestException, InternalServerErrorException, NotFoundException } from '@exceptions';
 import ffmpegPath from '@ffmpeg-installer/ffmpeg';
 import { Boom } from '@hapi/boom';
@@ -86,6 +87,7 @@ import { fetchLatestWaWebVersion } from '@utils/fetchLatestWaWebVersion';
 import { messageLogSummary } from '@utils/logRedaction';
 import { makeProxyAgent, makeProxyAgentUndici } from '@utils/makeProxyAgent';
 import { getOnWhatsappCache, saveOnWhatsappCache } from '@utils/onWhatsappCache';
+import { PacedTaskQueue } from '@utils/pacedTaskQueue';
 import { status } from '@utils/renderStatus';
 import { sendTelemetry } from '@utils/sendTelemetry';
 import useMultiFileAuthStatePrisma from '@utils/use-multi-file-auth-state-prisma';
@@ -166,6 +168,15 @@ export interface ExtendedIMessageKey extends proto.IMessageKey {
 }
 
 // LOGICFY: see profilePicture(). Generous for a real lookup, short next to Baileys' 60s default.
+// LOGICFY: about 4 contacts a second per gateway at most. Each contact costs up to two
+// Chatwoot requests, and running one at a time lets a slow Chatwoot slow this down too.
+const CHATWOOT_CONTACT_SYNC_GAP_MS = 250;
+const chatwootContactSyncLogger = new Logger('ChatwootContactSync');
+const chatwootContactSyncQueue = new PacedTaskQueue({
+  gapMs: CHATWOOT_CONTACT_SYNC_GAP_MS,
+  onError: (key, error) => chatwootContactSyncLogger.warn(`Contact sync failed for ${key}: ${error}`),
+});
+
 const PROFILE_PICTURE_TIMEOUT_MS = 8_000;
 
 const groupMetadataCache = new CacheService(new CacheEngine(configService, 'groups').getEngine());
@@ -881,18 +892,26 @@ export class BaileysStartupService extends ChannelStartupService {
           }
 
           this.sendDataWebhook(Events.CONTACTS_UPDATE, updatedContacts);
-          await Promise.all(
-            updatedContacts.map(async (contact) => {
-              if (this.configService.get<Database>('DATABASE').SAVE_DATA.CONTACTS) {
-                await this.prismaRepository.contact.updateMany({
+          if (this.configService.get<Database>('DATABASE').SAVE_DATA.CONTACTS) {
+            await Promise.all(
+              updatedContacts.map((contact) =>
+                this.prismaRepository.contact.updateMany({
                   where: { remoteJid: contact.remoteJid, instanceId: this.instanceId },
                   data: { profilePicUrl: contact.profilePicUrl },
-                });
-              }
+                }),
+              ),
+            );
+          }
 
-              if (this.configService.get<Chatwoot>('CHATWOOT').ENABLED && this.localChatwoot?.enabled) {
-                const instance = { instanceName: this.instance.name, instanceId: this.instance.id };
+          if (this.configService.get<Chatwoot>('CHATWOOT').ENABLED && this.localChatwoot?.enabled) {
+            const instance = { instanceName: this.instance.name, instanceId: this.instance.id };
 
+            // LOGICFY: one queue per gateway, not awaited. Doing this for every contact at
+            // once took Chatwoot down for all accounts when a large number re-paired
+            // (production 2026-11-07, 3,345 requests in two minutes). Awaiting it here
+            // would also hold up the history sync that calls this handler.
+            for (const contact of updatedContacts) {
+              chatwootContactSyncQueue.add(`${instance.instanceName}:${contact.remoteJid}`, async () => {
                 const findParticipant = await this.chatwootService.findContact(
                   instance,
                   contact.remoteJid.split('@')[0],
@@ -902,13 +921,16 @@ export class BaileysStartupService extends ChannelStartupService {
                   return;
                 }
 
-                this.chatwootService.updateContact(instance, findParticipant.id, {
+                await this.chatwootService.updateContact(instance, findParticipant.id, {
                   name: contact.pushName,
                   avatar_url: contact.profilePicUrl,
                 });
-              }
-            }),
-          );
+              });
+            }
+            this.logger.info(
+              `Queued ${updatedContacts.length} contacts for Chatwoot sync (${chatwootContactSyncQueue.size} waiting)`,
+            );
+          }
         }
       } catch (error) {
         console.error(error);

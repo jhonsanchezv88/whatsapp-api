@@ -1,6 +1,6 @@
 # Logicfy modifications to Evolution API
 
-_Last updated: 2026-11-06 (ack `<status>` stanzas and ignore `@bot` senders to end the 50-minute disconnect loop; libsignal key dumps and decrypt stack traces filtered out of the logs; whole-message logs reduced to a summary). Previously 2026-10-22 (inbox resolved by its webhook URL first, stale `nameInbox` corrected in place; 2026-10-19: name AND `Channel::Api`, wrong-inbox cache entries self-heal). Previously 2026-10-13 (typing presence relayed from Chatwoot typing events), 2026-09-04 (evening). Fork of Evolution API v2.3.7 (`jhonsanchezv88/whatsapp-api`)._
+_Last updated: 2026-11-07 (re-pairing no longer floods Chatwoot with contact lookups). Previously 2026-11-06 (ack `<status>` stanzas and ignore `@bot` senders to end the 50-minute disconnect loop; libsignal key dumps and decrypt stack traces filtered out of the logs; whole-message logs reduced to a summary). Previously 2026-10-22 (inbox resolved by its webhook URL first, stale `nameInbox` corrected in place; 2026-10-19: name AND `Channel::Api`, wrong-inbox cache entries self-heal). Previously 2026-10-13 (typing presence relayed from Chatwoot typing events), 2026-09-04 (evening). Fork of Evolution API v2.3.7 (`jhonsanchezv88/whatsapp-api`)._
 
 This is the authoritative list of every change this fork carries on top of upstream
 Evolution API. **Read it before merging upstream** — these are the sites that will
@@ -190,6 +190,18 @@ in Baileys 7.0.0-rc.9 never get that ack:
 or each status is acked twice. Keep the `@bot` rule until `decodeMessageNode` accepts them.
 We ack directly rather than through Baileys' offline queue, because that queue is internal
 and routing through it would mean patching `node_modules`.
+
+### Pace the contact sync to Chatwoot — 2026-11-07
+`src/utils/pacedTaskQueue.ts` (new), `whatsapp.baileys.service.ts` (`contacts.upsert`). Test:
+`npx tsx test/pacedTaskQueue.test.ts`.
+
+Pairing delivers the whole contact list in chunks. Upstream ran `findContact` and `updateContact`
+for every contact at once inside `Promise.all`. When a large account re-paired in production on
+2026-11-07, that made 3,345 Chatwoot requests in two minutes, about 1,200 Chatwoot requests answered
+500/502 across all accounts, and 14 customer messages were dropped because `createConversation`
+failed. Now one queue per gateway handles one contact at a time with a 250ms pause. It is not
+awaited, because `messaging-history.set` calls this handler. The queue lives in memory, so a restart
+abandons what is left; the sync is only a name and avatar refresh, so that is acceptable.
 
 ## 4. Configuration
 
