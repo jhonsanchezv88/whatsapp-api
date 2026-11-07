@@ -24,6 +24,7 @@ import { createJid } from '@utils/createJid';
 import i18next from '@utils/i18n';
 import { messageLogSummary } from '@utils/logRedaction';
 import { sendTelemetry } from '@utils/sendTelemetry';
+import { BUSINESS_TEMPLATE_FLAG, flattenTemplateMessage } from '@utils/templateMessage';
 import axios from 'axios';
 import { WAMessageContent, WAMessageKey } from 'baileys';
 import dayjs from 'dayjs';
@@ -1182,6 +1183,7 @@ export class ChatwootService {
         content_attributes: {
           ...replyToIds,
           ...this.getAdReferral(messageBody),
+          ...this.getBusinessTemplateFlag(messageBody),
         },
         source_reply_id: sourceReplyId ? sourceReplyId.toString() : null,
       },
@@ -1310,11 +1312,18 @@ export class ChatwootService {
     if (messageBody && instance) {
       const replyToIds = await this.getReplyToIds(messageBody, instance);
       const adReferral = this.getAdReferral(messageBody);
+      const businessTemplate = this.getBusinessTemplateFlag(messageBody);
 
-      if (replyToIds.in_reply_to || replyToIds.in_reply_to_external_id || adReferral.referral) {
+      if (
+        replyToIds.in_reply_to ||
+        replyToIds.in_reply_to_external_id ||
+        adReferral.referral ||
+        Object.keys(businessTemplate).length > 0
+      ) {
         const content = JSON.stringify({
           ...replyToIds,
           ...adReferral,
+          ...businessTemplate,
         });
         data.append('content_attributes', content);
       }
@@ -2083,6 +2092,17 @@ export class ChatwootService {
     return result;
   }
 
+  private getBusinessTemplateFlag(messageBody: any) {
+    return messageBody?.logicfyBusinessTemplate ? { [BUSINESS_TEMPLATE_FLAG]: true } : {};
+  }
+
+  private whatsappToChatwootMarkdown(text: string) {
+    return text
+      .replace(/\*((?!\s)([^\n*]+?)(?<!\s))\*/g, '**$1**')
+      .replace(/_((?!\s)([^\n_]+?)(?<!\s))_/g, '*$1*')
+      .replace(/~((?!\s)([^\n~]+?)(?<!\s))~/g, '~~$1~~');
+  }
+
   private isInteractiveButtonMessage(messageType: string, message: any) {
     return messageType === 'interactiveMessage' && message.interactiveMessage?.nativeFlowMessage?.buttons?.length > 0;
   }
@@ -2401,13 +2421,23 @@ export class ChatwootService {
           };
         }
 
+        // LOGICFY: a template from another business becomes plain text or media here. `body` is reassigned, not
+        // mutated, because the caller saves this object as the raw message afterwards. Its text is already
+        // formatted, so the link buttons are not mangled below.
+        const isTemplateMessage = !!body.message?.templateMessage;
+        if (isTemplateMessage) {
+          body = {
+            ...body,
+            ...flattenTemplateMessage(body.message.templateMessage, i18next.t('cw.templateMessage.noText'), (text) =>
+              this.whatsappToChatwootMarkdown(text),
+            ),
+            logicfyBusinessTemplate: !body.key.fromMe,
+          };
+        }
+
         const originalMessage = await this.getConversationMessage(body.message);
-        const bodyMessage = originalMessage
-          ? originalMessage
-              .replaceAll(/\*((?!\s)([^\n*]+?)(?<!\s))\*/g, '**$1**')
-              .replaceAll(/_((?!\s)([^\n_]+?)(?<!\s))_/g, '*$1*')
-              .replaceAll(/~((?!\s)([^\n~]+?)(?<!\s))~/g, '~~$1~~')
-          : originalMessage;
+        let bodyMessage =
+          originalMessage && !isTemplateMessage ? this.whatsappToChatwootMarkdown(originalMessage) : originalMessage;
 
         if (bodyMessage && bodyMessage.includes('/survey/responses/') && bodyMessage.includes('http')) {
           return;
@@ -2430,7 +2460,7 @@ export class ChatwootService {
             },
           });
 
-        const isMedia = this.isMediaMessage(body.message);
+        let isMedia = this.isMediaMessage(body.message);
 
         const adsMessage = this.getAdsMessage(body);
 
@@ -2455,12 +2485,28 @@ export class ChatwootService {
 
         const messageType = body.key.fromMe ? 'outgoing' : 'incoming';
 
+        // LOGICFY: a template header that will not download must not lose the template's text.
+        let templateMedia: any = null;
+        if (isMedia && isTemplateMessage) {
+          try {
+            templateMedia = await waInstance?.getBase64FromMediaMessage({ message: { ...body } });
+          } catch (error) {
+            this.logger.warn(`Template media download failed, sending its text only: ${error}`);
+          }
+          if (!templateMedia?.base64) {
+            isMedia = false;
+            bodyMessage = bodyMessage || i18next.t('cw.templateMessage.noText');
+          }
+        }
+
         if (isMedia) {
-          const downloadBase64 = await waInstance?.getBase64FromMediaMessage({
-            message: {
-              ...body,
-            },
-          });
+          const downloadBase64 =
+            templateMedia ??
+            (await waInstance?.getBase64FromMediaMessage({
+              message: {
+                ...body,
+              },
+            }));
 
           let nameFile: string;
           const messageBody = body?.message[body?.messageType];

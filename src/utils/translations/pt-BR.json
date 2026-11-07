@@ -17,6 +17,7 @@
   "cw.locationMessage.longitude": "Longitude",
   "cw.locationMessage.locationName": "Nome",
   "cw.locationMessage.locationAddress": "Endereço",
+  "cw.templateMessage.noText": "Mensagem de modelo sem texto legível. Abra no telefone para ver.",
   "cw.locationMessage.locationUrl": "URL",
   "cw.contactMessage.contact": "Contato",
   "cw.contactMessage.name": "Nome",
