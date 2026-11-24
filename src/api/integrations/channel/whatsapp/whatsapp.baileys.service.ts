@@ -1247,6 +1247,45 @@ export class BaileysStartupService extends ChannelStartupService {
 
           const messageRaw = this.prepareMessage(received);
 
+          // LOGICFY: a LID-addressed message often arrives with no remoteJidAlt even
+          // though Baileys already knows the phone from its LID↔PN mapping store (the
+          // pairing is learned from contact sync, earlier messages, and the device lookup
+          // of our own first send to a phone number). Ask the store so the Chatwoot
+          // contact is matched by phone and every downstream consumer (native
+          // integration, logicfy) sees one identity instead of a phone-less "<lid>@lid"
+          // contact. Best-effort: an unknown mapping leaves the message exactly as it was.
+          //
+          // This MUST run before the Chatwoot handoff below. It used to sit after it,
+          // so Chatwoot only ever saw the bare LID: production account 370, 2026-11-24,
+          // the owner opened conversation 289 to +573147711600 from the pencil icon, the
+          // customer's reply arrived as 226422136283173@lid, and Chatwoot got a second
+          // contact (42817) and conversation 290 — while this lookup, six seconds later,
+          // resolved the phone for the webhook.
+          //
+          // remoteJidLid is recorded here too: createConversation() falls back to it to
+          // reuse an existing LID-keyed contact (a customer first seen LID-only) when no
+          // contact has the phone yet, so knowing the phone never splits that customer.
+          // remoteJid itself is swapped to the phone only further down, after Chatwoot,
+          // which reads the phone from remoteJidAlt.
+          if (messageRaw.key.remoteJid?.includes('@lid') && !messageRaw.key.remoteJidAlt) {
+            try {
+              const pnJid = await this.client.signalRepository.lidMapping.getPNForLID(messageRaw.key.remoteJid);
+              if (pnJid) {
+                // getPNForLID returns a device JID ("<phone>:0@s.whatsapp.net"); WhatsApp's
+                // own remoteJidAlt is the plain user JID, so normalise to that.
+                messageRaw.key.remoteJidAlt = jidNormalizedUser(pnJid);
+                this.logger.verbose(
+                  `LOGICFY: resolved phone ${messageRaw.key.remoteJidAlt} for LID ${messageRaw.key.remoteJid} from the mapping store`,
+                );
+              }
+            } catch (error) {
+              this.logger.verbose(`LOGICFY: LID→PN lookup failed for ${messageRaw.key.remoteJid}: ${error?.message}`);
+            }
+          }
+          if (messageRaw.key.remoteJid?.includes('@lid') && messageRaw.key.remoteJidAlt) {
+            messageRaw.key.remoteJidLid = messageRaw.key.remoteJid;
+          }
+
           if (messageRaw.messageType === 'pollUpdateMessage') {
             const pollCreationKey = messageRaw.message.pollUpdateMessage.pollCreationMessageKey;
             const pollMessage = (await this.getMessage(pollCreationKey, true)) as proto.IWebMessageInfo;
@@ -1524,24 +1563,8 @@ export class BaileysStartupService extends ChannelStartupService {
           this.logger.verbose(messageLogSummary(messageRaw));
 
           sendTelemetry(`received.message.${messageRaw.messageType ?? 'unknown'}`);
-          // LOGICFY: a LID-addressed message often arrives with no remoteJidAlt even
-          // though Baileys already knows the phone from its LID↔PN mapping store (the
-          // pairing gets learned from contact sync and earlier messages). Ask the store
-          // so the swap below can run: the Chatwoot contact is then created WITH the
-          // phone number, and every downstream consumer (native integration, logicfy)
-          // sees one identity instead of a phone-less "<lid>@lid" contact. Best-effort:
-          // an unknown mapping leaves the message exactly as it was.
-          if (messageRaw.key.remoteJid?.includes('@lid') && !messageRaw.key.remoteJidAlt) {
-            try {
-              const pnJid = await this.client.signalRepository.lidMapping.getPNForLID(messageRaw.key.remoteJid);
-              if (pnJid) {
-                messageRaw.key.remoteJidAlt = pnJid;
-                this.logger.verbose(`LOGICFY: resolved phone ${pnJid} for LID ${messageRaw.key.remoteJid} from the mapping store`);
-              }
-            } catch (error) {
-              this.logger.verbose(`LOGICFY: LID→PN lookup failed for ${messageRaw.key.remoteJid}: ${error?.message}`);
-            }
-          }
+          // The LID→phone lookup now runs right after prepareMessage(), before the
+          // Chatwoot handoff (see the LOGICFY note there).
           if (messageRaw.key.remoteJid?.includes('@lid') && messageRaw.key.remoteJidAlt) {
             // Keep the LID before swapping in the phone JID. Downstream consumers expect
             // remoteJid to be the phone number, but overwriting it destroys the only copy
