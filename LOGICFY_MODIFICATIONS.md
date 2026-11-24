@@ -24,15 +24,23 @@ of the phone↔LID pairing WhatsApp will ever volunteer. We stash it first:
 merge contact identities; remove this and contacts silently split into two rows again.
 Also declares `remoteJidLid?: string` on the key type (~line 160).
 
-### Resolve the phone for LID-only messages from Baileys' mapping store — 2026-09-01
+### Resolve the phone for LID-only messages from Baileys' mapping store — 2026-09-01, moved 2026-11-24 (`c257e7b2`)
 `src/api/integrations/channel/whatsapp/whatsapp.baileys.service.ts` (messages.upsert,
-just before the LID swap)
+right after `prepareMessage()`, **before** `chatwootService.eventWhatsapp`)
 
 A LID-addressed message often carries no `remoteJidAlt` even though Baileys already
-knows the phone (`signalRepository.lidMapping.getPNForLID`, learned from contact sync
-and earlier traffic). We fill `remoteJidAlt` from the store so the swap below runs and
-the Chatwoot contact is created WITH the phone number instead of as a phone-less
-`<lid>@lid` record. Best-effort — an unknown mapping changes nothing.
+knows the phone (`signalRepository.lidMapping.getPNForLID`, learned from contact sync,
+earlier traffic, and the device lookup of our own first send to a phone number). We fill
+`remoteJidAlt` from the store (normalised with `jidNormalizedUser`: the store returns
+`<phone>:0@s.whatsapp.net`) and set `remoteJidLid`, so the Chatwoot integration matches
+the contact by phone and `createConversation` can still fall back to a LID-keyed
+contact. Best-effort — an unknown mapping changes nothing. The `remoteJid` swap for
+webhook consumers stays after the Chatwoot handoff.
+
+Until 2026-11-24 this lookup sat after the Chatwoot handoff, so only the webhook ever
+saw the phone; Chatwoot got the bare LID. Production account 370: a conversation opened
+from the new-conversation form to +573147711600 (conv 289) got a second contact and
+conversation (290) on the customer's LID-only reply. Keep it before the handoff.
 
 ### Reuse the LID-keyed Chatwoot contact for phone-addressed messages — 2026-09-01
 `src/api/integrations/chatbot/chatwoot/services/chatwoot.service.ts`
